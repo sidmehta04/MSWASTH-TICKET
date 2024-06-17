@@ -1,2 +1,2 @@
 ﻿# MSWASTH-TICKET
-https://mswasthtickets.tiiny.site/
+https://mswasthticket.tiiny.site/
