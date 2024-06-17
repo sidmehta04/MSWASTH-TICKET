@@ -67,6 +67,10 @@
          .item:last-child {
          margin-bottom: 0;
          }
+         .error {
+         color: red;
+         display: none;
+         }
          .deleteItem {
          position: absolute;
          top: 10px;
@@ -417,7 +421,7 @@
             <input type="text" id="partnerName" placeholder="Partner Name" required>
             <div id="itemsContainer"></div>
             <button type="button" class="addBtn" id="addItemButton">Add Another Item</button>
-            <button type="button" class="submitBtn" id="submit1" onclick="submitData()">Submit</button>
+            <button type="button" class="submitBtn" id="submit1" onclick="submitData()" type="submit">Submit</button>
          </form>
       </div>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
@@ -432,7 +436,8 @@
      document
        .getElementById("addItemButton")
        .addEventListener("click", addItem);
-     addDeleteBtnListeners(); // Attach initial delete button listeners
+     
+       // Attach initial delete button listeners
    
      // Event listener for EMP ID select
      document
@@ -484,8 +489,8 @@
    <input type="number" placeholder="Quantity" class="quantityInput" id="quant"  required />
    <input type="number" step="0.01" placeholder="Price" class="priceInput"  id="price" required />
    <input type="text" class="sumInput" placeholder="Sum" readonly />
-
-
+   
+   
    
    <button class="deleteItem">Delete Item</button>
    <button class="duplicateItem submitBtn" >Duplicate</button> 
@@ -508,26 +513,38 @@
       
    }
    function calculateSum(itemDiv) {
-  const quantityInput = itemDiv.querySelector(".quantityInput");
-  const priceInput = itemDiv.querySelector(".priceInput");
-  const sumInput = itemDiv.querySelector(".sumInput");
-
-  const quantity = parseFloat(quantityInput.value) || 0;
-  const price = parseFloat(priceInput.value) || 0;
-
-  const sum = quantity * price;
-  sumInput.value = sum.toFixed(2);
-}
+   const quantityInput = itemDiv.querySelector(".quantityInput");
+   const priceInput = itemDiv.querySelector(".priceInput");
+   const sumInput = itemDiv.querySelector(".sumInput");
    
-   function toggleCustomItemInput(select) {
-     const itemInput = select.nextElementSibling;
-     if (select.value === "other") {
-       itemInput.style.display = "block";
-     } else {
-       itemInput.style.display = "none";
-     }
+   const quantity = parseFloat(quantityInput.value) || 0;
+   const price = parseFloat(priceInput.value) || 0;
+   
+   const sum = quantity * price;
+   sumInput.value = sum.toFixed(2);
    }
    
+   function toggleCustomItemInput(selectElement) {
+   const itemDiv = selectElement.closest(".item");
+   const itemInput = itemDiv.querySelector(".itemInput");
+   const selectedValue = selectElement.value;
+   
+   if (selectedValue === "other") {
+    itemInput.style.display = "inline-block";
+    itemInput.required = true;
+   } else {
+    itemInput.style.display = "none";
+    itemInput.required = false;
+    itemInput.value = ""; // Clear the input value
+   }
+   
+   // Validate the "other" input field
+   if (selectedValue === "other" && itemInput.value.trim() === "") {
+    itemInput.setCustomValidity("Please specify the item name.");
+   } else {
+    itemInput.setCustomValidity("");
+   }
+   }
    
    function deleteItem(event) {
      if (confirm("Are you sure you want to delete this item?")) {
@@ -542,6 +559,12 @@
    function validateFormData() {
      const dcName = document.getElementById("dcName").value.trim();
      const partnerName = document.getElementById("partnerName").value.trim();
+     const fileInput = document.getElementById("fileInput");
+     
+      if (fileInput.files.length === 0) {
+        alert("Please add a file.");
+        return false;
+      }
    
      if (dcName === "" || partnerName === "") {
        alert(
@@ -587,82 +610,84 @@
    
    
    function submitData() {
-   if (!validateFormData()) {
-   return;
-   }
-   if (!confirm("Are you sure you want to submit the data?")) {
-   return;
-   }
-   
-   
-   // Retrieve DC Name, Partner Name, and empID values
-   const dcName = document.getElementById("dcName").value;
-   let empID = document.getElementById("empID").value;
-   const empIDInput = document.getElementById("empIDInput").value;
-   if (empID === "other") {
-   empID = empIDInput;
-   }
-   const partnerName = document.getElementById("partnerName").value;
-   
-   // Map items data including the empID
-   const items = Array.from(document.querySelectorAll(".item")).map((item) => {
-   const clinicCodeInput = item.querySelector(".clinicCodeInput").value.trim();
-   const itemSelect = item.querySelector(".itemSelect").value;
-   const itemInput =
-   item.querySelector(".itemInput").style.display !== "none"
-     ? item.querySelector(".itemInput").value
-     : null;
-   const itemName = itemSelect !== "other" ? itemSelect : itemInput;
-   return {
-   "DC Name": dcName,
-   "emp ID": empID,
-   "Clinic Code": clinicCodeInput,
-   "Partner Name": partnerName,
-   Item: itemName,
-   Quantity: item.querySelector(".quantityInput").value,
-   Total_Price: item.querySelector(".priceInput").value,
-   Sum:item.querySelector(".sumInput").value,
-   };
-   });
-   
-   // Get the uploaded files
-   var fileInput = document.getElementById("fileInput");
-   const files = fileInput.files;
-   
-   // Create a new JSZip instance
-   const zip = new JSZip();
-   
-   // Add the uploaded files to the ZIP
-   for (let i = 0; i < files.length; i++) {
-   zip.file(files[i].name, files[i]);
-   }
-   
-   // Create the Excel file with the items data
-   const headers = [
-   "DC Name",
-   "emp ID",
-   "Clinic Code",
-   "Partner Name",
-   "Item",
-   "Quantity",
-   "Total_Price",
-   "Sum"
-   ];
-   const wb = XLSX.utils.book_new();
-   const wsName = "ItemsData";
-   const ws = XLSX.utils.json_to_sheet(items, { header: headers });
-   XLSX.utils.book_append_sheet(wb, ws, wsName);
-   const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-   
-   // Add the Excel file to the ZIP
-   zip.file("ItemsData.xlsx", excelBuffer);
-   
-   // Generate the ZIP file
-   zip.generateAsync({ type: "blob" }).then(function (content) {
-   saveAs(content, "output.zip");
-   });
-  
-   }
+    // Get all the item rows
+    const itemRows = document.querySelectorAll(".item");
+
+    // Check if there are any items added
+    if (itemRows.length === 0) {
+        alert("Please add at least one item before submitting the data.");
+        return;
+    }
+
+    // Check if the form data is valid
+    if (!validateFormData()) {
+        // Handle invalid form data
+        return;
+    }
+
+    // Confirm with the user before submitting the data
+    if (!confirm("Are you sure you want to submit the data?")) {
+        return;
+    }
+
+    try {
+        // Retrieve DC Name, Partner Name, and empID values
+        const dcName = document.getElementById("dcName").value;
+        let empID = document.getElementById("empID").value;
+        const empIDInput = document.getElementById("empIDInput").value;
+        if (empID === "other") {
+            empID = empIDInput;
+        }
+        const partnerName = document.getElementById("partnerName").value;
+
+        // Map items data including the empID
+        const items = Array.from(itemRows).map((item) => {
+            const clinicCodeInput = item.querySelector(".clinicCodeInput").value.trim();
+            const itemSelect = item.querySelector(".itemSelect").value;
+            const itemInput =
+                item.querySelector(".itemInput").style.display !== "none"
+                    ? item.querySelector(".itemInput").value
+                    : null;
+            const itemName = itemSelect !== "other" ? itemSelect : itemInput;
+            return {
+                "DC Name": dcName,
+                "emp ID": empID,
+                "Clinic Code": clinicCodeInput,
+                "Partner Name": partnerName,
+                Item: itemName,
+                Quantity: item.querySelector(".quantityInput").value,
+                Total_Price: item.querySelector(".priceInput").value,
+                Sum: item.querySelector(".sumInput").value,
+            };
+        });
+
+        // Create the Excel file with the items data
+        const headers = [
+            "DC Name",
+            "emp ID",
+            "Clinic Code",
+            "Partner Name",
+            "Item",
+            "Quantity",
+            "Total_Price",
+            "Sum"
+        ];
+        const wb = XLSX.utils.book_new();
+        const wsName = "ItemsData";
+        const ws = XLSX.utils.json_to_sheet(items, { header: headers });
+        XLSX.utils.book_append_sheet(wb, ws, wsName);
+        const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+
+        // Save the Excel file
+        const blob = new Blob([excelBuffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+        saveAs(blob, "ItemsData.xlsx");
+    } catch (error) {
+        // Handle any errors that occurred during data processing or file generation
+        console.error("Error:", error);
+        alert("An error occurred while processing the data. Please try again.");
+    }
+}
+
    
    function duplicateItem(event) {
      const itemToDuplicate = event.target.parentNode; // Get the parent item div
@@ -697,7 +722,7 @@
      document
        .getElementById("addItemButton")
        .addEventListener("click", addItem);
-     addDeleteBtnListeners(); // Attach initial delete button listeners
+      // Attach initial delete button listeners
    
      // Event listener for EMP ID select (existing functionality)
      document
@@ -737,94 +762,117 @@
    
 </script>   
 <script type="module">
+  
 
-   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";  
-    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-database.js";
-   import { getStorage, ref as storageRef, uploadBytes } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-storage.js";
-   
-   // Your web app's Firebase configuration
-   const firebaseConfig = {
-    apiKey: "AIzaSyA0OIPqPpYcLyyBAci9UWx-95QIVtwtRik",
-    authDomain: "mswasth-21df5.firebaseapp.com",
-    databaseURL: "https://mswasth-21df5-default-rtdb.firebaseio.com",
-    projectId: "mswasth-21df5",
-    storageBucket: "mswasth-21df5.appspot.com",
-    messagingSenderId: "281245658334",
-    appId: "1:281245658334:web:7a4443d4f4821e00f8e64f"
-  };
-   
-   // Initialize Firebase
-   const app = initializeApp(firebaseConfig);
-   const db = getDatabase(app);
-   const storage = getStorage(app);
-   
-   // Helper function to get element value
-   function getElementVal(id) {
-     const element = document.getElementById(id);
-     return element ? element.value : null;
-   }
-   
-   // Helper function to get values from multiple input fields
-   function getMultipleValues(fieldName) {
-     const values = [];
-     const inputs = document.querySelectorAll(`[id^="${fieldName}"]`);
-     inputs.forEach((input) => {
-       if (input.value) {
-         values.push(input.value);
-       }
-     });
-     return values;
-   }
-   
-   // Helper function to generate a custom key
-   function generateCustomKey() {
-     const empIDInput = getElementVal("empIDInput");
-     const timestamp = Date.now();
-     return `${empIDInput}_${timestamp}`;
-   }
-   
-   document.addEventListener("DOMContentLoaded", function() {
-     document.getElementById("submit1").addEventListener('click', async function(e) {
-      if (!validateFormData()) {
-   return;
-   }
-   if (!confirm("Are you sure you want to submit the data?")) {
-   return;
-   }
-       e.preventDefault();
-   
-       // Generate a custom key for each entry
-       const customKey = generateCustomKey();
-       const entry = {
-         name: getElementVal("dcName"),
-         empid_search: getElementVal("empIDSearch"),
-         empid_name: getElementVal("empIDInput"),
-         partnername: getElementVal("partnerName"),
-         clinic: getMultipleValues("clinic"),
-         cell: getMultipleValues("cell"),
-         quant: getMultipleValues("quant"),
-         price: getMultipleValues("price")
-       };
-   
-       
-         
-   
-         // Upload files to Firebase Storage
-         var fileInput1 = document.getElementById("fileInput");
-         const files1 = fileInput1.files;
-         for (let i = 0; i < files1.length; i++) {
-           const file = files1[i];
-           const fileRef = storageRef(storage, `files/${customKey}/${file.name}`);
-           await uploadBytes(fileRef, file);
-           console.log(`File ${file.name} uploaded successfully`);
-         }
-         // Save the entry to Firebase using the custom key
-         await set(ref(db, `user/${customKey}`), entry);
-         console.log("Data saved successfully");
-         // Optionally, reset the form after successful submission
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";  
+   import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-database.js";
+  import { getStorage, ref as storageRef, uploadBytes } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-storage.js";
+  
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+   apiKey: "AIzaSyA0OIPqPpYcLyyBAci9UWx-95QIVtwtRik",
+   authDomain: "mswasth-21df5.firebaseapp.com",
+   databaseURL: "https://mswasth-21df5-default-rtdb.firebaseio.com",
+   projectId: "mswasth-21df5",
+   storageBucket: "mswasth-21df5.appspot.com",
+   messagingSenderId: "281245658334",
+   appId: "1:281245658334:web:7a4443d4f4821e00f8e64f"
+ };
+  
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  const storage = getStorage(app);
+  
+  // Helper function to get element value
+  function getElementVal(id) {
+    const element = document.getElementById(id);
+    return element ? element.value : null;
+  }
+  
+  // Helper function to get values from multiple input fields
+  function getMultipleValues(fieldName) {
+  const values = [];
+  const inputs = document.querySelectorAll(`[id^="${fieldName}"]`);
+  inputs.forEach((input) => {
+    const parent = input.closest(".item");
+    const itemSelect = parent.querySelector(".itemSelect");
+    const itemInput = parent.querySelector(".itemInput");
+
+    if (fieldName === "cell") {
+      // Handle "cell" inputs
+      if (itemSelect.value === "other" && itemInput.value.trim()) {
+        values.push(itemInput.value.trim());
+      } else if (itemSelect.value !== "other") {
+        values.push(itemSelect.value);
+      }
+    } else {
+      // Handle other input types
+      values.push(input.value.trim());
+    }
+  });
+  return values;
+}
+  
+  // Helper function to generate a custom key
+  function generateCustomKey() {
+    const empIDInput = getElementVal("empIDInput");
+    const timestamp = Date.now();
+    return `${empIDInput}_${timestamp}`;
+  }
+ 
+  
+  document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("submit1").addEventListener('click', async function(e) {
+      const itemRows2 = document.querySelectorAll(".item");
+     if (itemRows2.length === 0) {
+      return;
+    }
+    const fileInput2 = document.getElementById("fileInput");
+     
+      if (fileInput2.files.length === 0) {
+        return false;
+      }
+     
+  
+      e.preventDefault();
+      const timestamp = Date.now();
+
+  
+      // Generate a custom key for each entry
+      const customKey = generateCustomKey();
+      const entry = {
+        name: getElementVal("dcName"),
+        empid_search: getElementVal("empIDSearch"),
+        empid_name: getElementVal("empIDInput"),
+        partnername: getElementVal("partnerName"),
+        clinic: getMultipleValues("clinic"),
+        cell: getMultipleValues("cell"),
+        quant: getMultipleValues("quant"),
+        price: getMultipleValues("price"),
+        timestamp: timestamp // Add the timestamp to the entry object
+
+      };
+  
       
-     });
-   });
+        
+  
+        // Upload files to Firebase Storage
+        var fileInput1 = document.getElementById("fileInput");
+        const files1 = fileInput1.files;
+        for (let i = 0; i < files1.length; i++) {
+          const file = files1[i];
+          const fileRef = storageRef(storage, `files/${customKey}/${file.name}`);
+          await uploadBytes(fileRef, file);
+          console.log(`File ${file.name} uploaded successfully`);
+        }
+        // Save the entry to Firebase using the custom key
+        await set(ref(db, `user/${customKey}`), entry);
+        console.log("Data saved successfully");
+        // Optionally, reset the form after successful submission
+     
+    });
+  });
 </script> 
 </body>
-</html>
+</html> 
