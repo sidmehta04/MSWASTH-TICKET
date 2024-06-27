@@ -98,6 +98,8 @@ document.addEventListener("DOMContentLoaded", function () {
         cell: getMultipleValues("cell"),
         quant: getMultipleValues("quant"),
         price: getMultipleValues("price"),
+        username:getElementVal("username"),
+        passwd:getElementVal("password"),
         timestamp: timestamp, // Add the timestamp to the entry object
       };
 
