@@ -691,9 +691,7 @@ document.addEventListener("DOMContentLoaded", function() {
     totalSumDisplay.textContent = `Total Sum: ₹${totalSum}`;
   }
 
-  function confirmSubmission(message) {
-    return confirm(message);
-  }
+
 
   function showConfirmMessage() {
     return confirm("Are you sure you want to submit the data?");
