@@ -1,25 +1,4 @@
-// document.addEventListener("DOMContentLoaded", function () {
-//   const searchInput = document.getElementById("employeeIdSearch");
-//   const empIDSelect = document.getElementById("employeeId");
-
-//   function filterOptions() {
-//     const searchValue = searchInput.value.toUpperCase();
-//     const options = empIDSelect.options;
-
-//     for (let i = 0; i < options.length; i++) {
-//       const option = options[i];
-//       const optionText = option.text.toUpperCase();
-
-//       if (optionText.includes(searchValue)) {
-//         option.style.display = "block";
-//       } else {
-//         option.style.display = "none";
-//       }
-//     }
-//   }
-
-//   searchInput.addEventListener("input", filterOptions);
-// });
+let userConfirmed = false;
 
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("addItemButton").addEventListener("click", addItem);
@@ -320,6 +299,7 @@ function validateFormData() {
 }
 
 function submitData() {
+  userConfirmed = false;
   // Get all the item rows
   const itemRows = document.querySelectorAll(".item");
 
@@ -328,14 +308,17 @@ function submitData() {
     alert("Please add at least one item before submitting the data.");
     return;
   }
-
   // Check if the form data is valid
   if (!validateFormData()) {
     // Handle invalid form data
     return;
   }
-
- 
+  userConfirmed = confirm("Are you sure you want to submit the data?");
+  
+  // Check if the user clicked "OK"
+  if (!userConfirmed) {
+    return;
+  }
 
   try {
     // Retrieve DC Name, Partner Name, and empID values
@@ -404,7 +387,7 @@ function submitData() {
   } catch (error) {
     // Handle any errors that occurred during data processing or file generation
     console.error("Error:", error);
-    alert("An error occurred while processing the data. Please try again.");
+    alert("submit An error occurred while processing the data. Please try again.");
   }
 }
 
@@ -464,9 +447,6 @@ function duplicateItem(event) {
   // Calculate sum for the duplicated item
   calculateSum(newItem);
 }
-
-
-
 
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("addItemButton").addEventListener("click", addItem);
@@ -630,7 +610,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function clearForm() {
   document.getElementById("dataForm").reset();
-  document.getElementById("itemsContainer").innerHTML = "";
+  const container = document.getElementById("itemsContainer");
+  container.innerHTML = ""; // Clear items
+  const totalSumDisplay = document.getElementById("totalSumDisplay");
+  if (totalSumDisplay) {
+    totalSumDisplay.remove(); // Remove total sum display if exists
+  }
 }
 
 document.getElementById("clearFormButton").addEventListener("click", clearForm);
@@ -650,19 +635,19 @@ function highlightEmptyFields() {
   return allFieldsFilled;
 }
 
-document.addEventListener("DOMContentLoaded", function() {
-  const submitButton = document.getElementById("submit1");
-  if (submitButton) {
-    submitButton.addEventListener("click", function(event) {
-      if (!highlightEmptyFields()) {
-        event.preventDefault();
-        alert("Please fill in all required fields.");
-      }
-    });
-  } else {
-    console.error("Element with ID 'submit1' not found.");
-  }
-});
+// document.addEventListener("DOMContentLoaded", function() {
+//   const submitButton = document.getElementById("submit1");
+//   if (submitButton) {
+//     submitButton.addEventListener("click", function(event) {
+//       if (!highlightEmptyFields()) {
+//         event.preventDefault();
+//         alert("Please fill in all required fields.");
+//       }
+//     });
+//   } else {
+//     console.error("Element with ID 'submit1' not found.");
+//   }
+// });
 
 
  // Function to calculate the total sum of all items
@@ -690,11 +675,3 @@ document.addEventListener("DOMContentLoaded", function() {
 
     totalSumDisplay.textContent = `Total Sum: ₹${totalSum}`;
   }
-
-  function confirmSubmission(message) {
-    return confirm(message);
-  }
-
-  function showConfirmMessage() {
-    return confirm("Are you sure you want to submit the data?");
-}
