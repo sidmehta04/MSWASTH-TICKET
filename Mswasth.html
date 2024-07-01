@@ -371,15 +371,15 @@
           type="button"
           class="submitBtn"
           id="submit1"
-          onclick="submitData()"
-        >
+          onclick="if (showConfirmMessage()) { submitData(); }"
+          >
           Submit
         </button>
       </form>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
-    <script src="https://mswasthticket1.tiiny.site/script.js"></script>
+    <!-- <script src="https://mswasthticket1.tiiny.site/script.js"></script> -->
     <script src="https://mswasthticket1.tiiny.site/test123.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>

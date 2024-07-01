@@ -40,58 +40,55 @@ function addItem() {
   const itemDiv = document.createElement("div");
   itemDiv.className = "item";
   itemDiv.innerHTML = `
-<input type="text" placeholder="Clinic Code" class="clinicCodeInput" required maxlength="10" id="clinic"/> 
-<select class="itemSelect" onchange="toggleCustomItemInput(this)" id="cell">
- <option value="cells">Cells</option>
- <option value="shelf">Shelf</option>
- <option value="chair">Chair</option>
- <option value="tablet charger">Tablet Charger</option>
- <option value="bm machine charger cable">BM Machine Charger Cable</option>
- <option value="tablet charging cable">Tablet Charging Cable</option>
- <option value="stationary item">Stationary Item</option>
- <option value="first-aid kit item">First-Aid Kit Item</option>
- <option value="bp kit">BP Kit</option>
- <option value="power bank">Power Bank</option>
- <option value="earphone">Earphone</option>
- <option value="stand">Stand</option>
- <option value="certificate">Certificate</option>
- <option value="first-aid kit">First-Aid KIT</option>
- <option value="bags">Bags</option>
- <option value="tube light">Tube Light</option>
- <option value="extension">Extension</option>
- <option value="sanitizer">Sanitizer</option>
- <option value="doctor certificate">Doctor Certificate</option>
- <option value="fan">Fan</option>
- <option value="curtain">Curtain</option>
- <option value="other">Other</option>
-</select>
-<input type="text" placeholder="If other, specify" class="itemInput" style="display: none;" />
-<input type="number" placeholder="Quantity" class="quantityInput" id="quant"  required />
-<input type="number" step="0.01" placeholder="Price" class="priceInput"  id="price" required />
-<input type="text" class="sumInput" placeholder="Sum" readonly />
-
-<button class="deleteItem">Delete Item</button>
-<button class="duplicateItem submitBtn" >Duplicate</button>
-`;
+    <input type="text" placeholder="Clinic Code" class="clinicCodeInput" required maxlength="10" id="clinic"/> 
+    <select class="itemSelect" onchange="toggleCustomItemInput(this)">
+      <option value="cells">Cells</option>
+      <option value="shelf">Shelf</option>
+      <option value="chair">Chair</option>
+      <option value="tablet charger">Tablet Charger</option>
+      <option value="bm machine charger cable">BM Machine Charger Cable</option>
+      <option value="tablet charging cable">Tablet Charging Cable</option>
+      <option value="stationary item">Stationary Item</option>
+      <option value="first-aid kit item">First-Aid Kit Item</option>
+      <option value="bp kit">BP Kit</option>
+      <option value="power bank">Power Bank</option>
+      <option value="earphone">Earphone</option>
+      <option value="stand">Stand</option>
+      <option value="certificate">Certificate</option>
+      <option value="first-aid kit">First-Aid KIT</option>
+      <option value="bags">Bags</option>
+      <option value="tube light">Tube Light</option>
+      <option value="extension">Extension</option>
+      <option value="sanitizer">Sanitizer</option>
+      <option value="doctor certificate">Doctor Certificate</option>
+      <option value="fan">Fan</option>
+      <option value="curtain">Curtain</option>
+      <option value="other">Other</option>
+    </select>
+    <input type="text" placeholder="If other, specify" class="itemInput" style="display: none;" />
+    <input type="number" placeholder="Quantity" class="quantityInput" required />
+    <input type="number" step="0.01" placeholder="Price" class="priceInput" required />
+    <input type="text" class="sumInput" placeholder="Sum" readonly />
+    <button class="deleteItem">Delete Item</button>
+    <button class="duplicateItem submitBtn">Duplicate</button>
+  `;
   container.appendChild(itemDiv);
 
-  // Attach event listeners to the buttons
+  // Attach event listeners to the buttons and inputs within the new item
   itemDiv.querySelector(".deleteItem").addEventListener("click", deleteItem);
-  itemDiv
-    .querySelector(".duplicateItem")
-    .addEventListener("click", duplicateItem);
-  itemDiv
-    .querySelector(".quantityInput")
-    .addEventListener("input", () => calculateSum(itemDiv));
-  itemDiv
-    .querySelector(".priceInput")
-    .addEventListener("input", () => calculateSum(itemDiv));
+  itemDiv.querySelector(".duplicateItem").addEventListener("click", duplicateItem);
+  itemDiv.querySelector(".quantityInput").addEventListener("input", () => calculateSum(itemDiv));
+  itemDiv.querySelector(".priceInput").addEventListener("input", () => calculateSum(itemDiv));
+
+  // Calculate sum for the newly added item
+  calculateSum(itemDiv);
   updateTotalSum();
   let selectedLanguage = document.querySelector('input[name="language"]:checked').value;
   translatePage(selectedLanguage);
 
 }
-function calculateSum(itemDiv) {
+ // Function to calculate the sum based on quantity and price inputs
+ function calculateSum(itemDiv) {
   const quantityInput = itemDiv.querySelector(".quantityInput");
   const priceInput = itemDiv.querySelector(".priceInput");
   const sumInput = itemDiv.querySelector(".sumInput");
@@ -102,7 +99,6 @@ function calculateSum(itemDiv) {
   const sum = quantity * price;
   sumInput.value = sum.toFixed(2);
   updateTotalSum();
-
 }
 
 function toggleCustomItemInput(selectElement) {
@@ -127,11 +123,12 @@ function toggleCustomItemInput(selectElement) {
   }
 }
 
+
+// Function to delete an item row
 function deleteItem(event) {
   if (confirm("Are you sure you want to delete this item?")) {
     event.target.parentNode.remove();
     updateTotalSum();
-
   }
 }
 
@@ -338,10 +335,7 @@ function submitData() {
     return;
   }
 
-  // Confirm with the user before submitting the data
-  if (!confirm("Are you sure you want to submit the data?")) {
-    return;
-  }
+ 
 
   try {
     // Retrieve DC Name, Partner Name, and empID values
@@ -415,30 +409,64 @@ function submitData() {
 }
 
 function duplicateItem(event) {
-  const itemToDuplicate = event.target.parentNode; // Get the parent item div
-  const newItem = itemToDuplicate.cloneNode(true); // Clone the entire item div
+  const itemToDuplicate = event.target.closest('.item');
+  const newItem = itemToDuplicate.cloneNode(true);
 
-  // Clear any input values that shouldn't be duplicated (e.g., Clinic Code)
-  newItem.querySelector(".clinicCodeInput").value = "";
+  // Clear clinicCodeInput for the new item
+  newItem.querySelector('.clinicCodeInput').value = '';
+  const originalSelect = itemToDuplicate.querySelector('.itemSelect');
+  const newSelect = newItem.querySelector('.itemSelect');
+  newSelect.value = originalSelect.value;
 
-  // Optionally, reset any "other" item inputs
-  const itemSelect = newItem.querySelector(".itemSelect");
-  const itemInput = newItem.querySelector(".itemInput");
-  if (itemSelect.value === "other") {
-    itemInput.style.display = "none";
-    itemInput.value = "";
+  // Copy other inputs from the previous item
+  const originalInputs = itemToDuplicate.querySelectorAll('.quantityInput, .priceInput');
+  const newInputs = newItem.querySelectorAll('.quantityInput, .priceInput');
+
+  originalInputs.forEach((input, index) => {
+    if (input.classList.contains('itemInput')) {
+      // Handle dropdown (select) element differently
+      const originalSelect = input.querySelector('select'); // Assuming select is directly within itemInput
+      const newSelect = newInputs[index].querySelector('select'); // Assuming select is directly within itemInput
+      if (originalSelect && newSelect) {
+        newSelect.value = originalSelect.value;
+      }
+    } else {
+      // For other input types (text, number)
+      newInputs[index].value = input.value;
+    }
+  });
+
+  const newItemInput = newItem.querySelector('.itemInput');
+  if (newSelect.value === 'other') {
+    newItemInput.style.display = 'inline-block';
+    newItemInput.value = itemToDuplicate.querySelector('.itemInput').value;
+  } else {
+    newItemInput.style.display = 'none';
+    newItemInput.value = '';
   }
 
-  itemToDuplicate.parentNode.insertBefore(newItem, itemToDuplicate.nextSibling); // Insert the new item after the original
+  // Insert the new item after the original
+  itemToDuplicate.parentNode.insertBefore(newItem, itemToDuplicate.nextSibling);
 
-  // Attach event listeners to the new item's buttons
-  newItem.querySelector(".deleteItem").addEventListener("click", deleteItem);
-  newItem
-    .querySelector(".duplicateItem")
-    .addEventListener("click", duplicateItem);
-    updateTotalSum();
+  // Attach event listeners to the new item
+  newItem.querySelector('.deleteItem').addEventListener('click', deleteItem);
+  newItem.querySelector('.duplicateItem').addEventListener('click', duplicateItem);
+  newSelect.addEventListener('change', function() {
+    toggleCustomItemInput(newSelect);
+  });
+  newItem.querySelector('.quantityInput').addEventListener('input', function(e) {
+    calculateSum(e.target.closest('.item'));
+  });
+  newItem.querySelector('.priceInput').addEventListener('input', function(e) {
+    calculateSum(e.target.closest('.item'));
+  });
 
+  // Calculate sum for the duplicated item
+  calculateSum(newItem);
 }
+
+
+
 
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("addItemButton").addEventListener("click", addItem);
@@ -622,33 +650,51 @@ function highlightEmptyFields() {
   return allFieldsFilled;
 }
 
-document.getElementById("submit1").addEventListener("click", function (event) {
-  if (!highlightEmptyFields()) {
-    event.preventDefault();
-    alert("Please fill in all required fields.");
+document.addEventListener("DOMContentLoaded", function() {
+  const submitButton = document.getElementById("submit1");
+  if (submitButton) {
+    submitButton.addEventListener("click", function(event) {
+      if (!highlightEmptyFields()) {
+        event.preventDefault();
+        alert("Please fill in all required fields.");
+      }
+    });
+  } else {
+    console.error("Element with ID 'submit1' not found.");
   }
 });
 
-function calculateTotalSum() {
-  const sumInputs = document.querySelectorAll(".sumInput");
-  let totalSum = 0;
-  sumInputs.forEach((input) => {
-    totalSum += parseFloat(input.value) || 0;
-  });
-  return totalSum.toFixed(2);
-}
 
-function updateTotalSum() {
-  const totalSum = calculateTotalSum();
-  let totalSumDisplay = document.getElementById("totalSumDisplay");
-
-  if (!totalSumDisplay) {
-    totalSumDisplay = document.createElement("div");
-    totalSumDisplay.id = "totalSumDisplay";
-    totalSumDisplay.style.fontWeight = "bold";
-    totalSumDisplay.style.marginTop = "20px";
-    document.querySelector(".container").appendChild(totalSumDisplay);
+ // Function to calculate the total sum of all items
+  function calculateTotalSum() {
+    const sumInputs = document.querySelectorAll(".sumInput");
+    let totalSum = 0;
+    sumInputs.forEach((input) => {
+      totalSum += parseFloat(input.value) || 0;
+    });
+    return totalSum.toFixed(2);
   }
 
-  totalSumDisplay.textContent = `Total Sum: ₹${totalSum}`;
+  // Function to update the displayed total sum
+  function updateTotalSum() {
+    const totalSum = calculateTotalSum();
+    let totalSumDisplay = document.getElementById("totalSumDisplay");
+
+    if (!totalSumDisplay) {
+      totalSumDisplay = document.createElement("div");
+      totalSumDisplay.id = "totalSumDisplay";
+      totalSumDisplay.style.fontWeight = "bold";
+      totalSumDisplay.style.marginTop = "20px";
+      document.querySelector(".container").appendChild(totalSumDisplay);
+    }
+
+    totalSumDisplay.textContent = `Total Sum: ₹${totalSum}`;
+  }
+
+  function confirmSubmission(message) {
+    return confirm(message);
+  }
+
+  function showConfirmMessage() {
+    return confirm("Are you sure you want to submit the data?");
 }

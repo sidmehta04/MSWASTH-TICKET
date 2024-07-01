@@ -2,13 +2,16 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
 import {
   getDatabase,
-  ref,
+  ref as dbRef,
   set,
+  get,
+  update,
 } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-database.js";
 import {
   getStorage,
   ref as storageRef,
   uploadBytes,
+  getDownloadURL,
 } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-storage.js";
 
 // Your web app's Firebase configuration
@@ -33,24 +36,22 @@ function getElementVal(id) {
   return element ? element.value : null;
 }
 
-// Helper function to get values from multiple input fields
-function getMultipleValues(fieldName) {
+// Helper function to get values from multiple input fields by class
+function getMultipleValuesByClass(fieldClass) {
   const values = [];
-  const inputs = document.querySelectorAll(`[id^="${fieldName}"]`);
+  const inputs = document.querySelectorAll(`.${fieldClass}`);
   inputs.forEach((input) => {
     const parent = input.closest(".item");
-    const itemSelect = parent.querySelector(".itemSelect");
-    const itemInput = parent.querySelector(".itemInput");
-
-    if (fieldName === "cell") {
-      // Handle "cell" inputs
-      if (itemSelect.value === "other" && itemInput.value.trim()) {
+    
+    if (fieldClass === "itemSelect") {
+      const itemInput = parent.querySelector(".itemInput");
+      
+      if (input.value === "other" && itemInput.value.trim()) {
         values.push(itemInput.value.trim());
-      } else if (itemSelect.value !== "other") {
-        values.push(itemSelect.value);
+      } else {
+        values.push(input.value);
       }
     } else {
-      // Handle other input types
       values.push(input.value.trim());
     }
   });
@@ -68,71 +69,100 @@ document.addEventListener("DOMContentLoaded", function () {
   document
     .getElementById("submit1")
     .addEventListener("click", async function (e) {
-      const select = document.querySelector("#employeeId");
+      e.preventDefault();
 
-      const itemRows2 = document.querySelectorAll(".item");
-      if (itemRows2.length === 0) {
+      const itemRows = document.querySelectorAll(".item");
+      if (itemRows.length === 0) {
         return;
       }
-      const fileInput2 = document.getElementById("fileInput");
 
-      if (fileInput2.files.length === 0) {
-        return false;
+      const fileInput = document.getElementById("fileInput");
+      if (fileInput.files.length === 0) {
+        return;
       }
+
       if (!validateFormData()) {
-    return;
-  }
-
-
-      e.preventDefault();
-      const timestamp = Date.now();
-
-      // Generate a custom key for each entry
-      const customKey = generateCustomKey();
-      const entry = {
-        name: getElementVal("dcName"),
-        empid_search: getElementVal("employeeIdSearch"),
-        empid_name: getElementVal("employeeIdSearch"),
-        partnername: getElementVal("partnerNameSearch"),
-        clinic: getMultipleValues("clinic"),
-        cell: getMultipleValues("cell"),
-        quant: getMultipleValues("quant"),
-        price: getMultipleValues("price"),
-        username:getElementVal("username"),
-        passwd:getElementVal("password"),
-        timestamp: timestamp, // Add the timestamp to the entry object
-      };
-
-      // Upload files to Firebase Storage
-      var fileInput1 = document.getElementById("fileInput");
-      const files1 = fileInput1.files;
-      for (let i = 0; i < files1.length; i++) {
-        const file = files1[i];
-        const fileRef = storageRef(storage, `files/${customKey}/${file.name}`);
-        await uploadBytes(fileRef, file);
-        console.log(`File ${file.name} uploaded successfully`);
+        return;
       }
-      // Save the entry to Firebase using the custom key
-      await set(ref(db, `user/${customKey}`), entry);
-      console.log("Data saved successfully");
-      // Optionally, reset the form after successful submission
+
+      try {
+        const timestamp = Date.now();
+        const customKey = generateCustomKey();
+
+        const clinics = getMultipleValuesByClass("clinicCodeInput");
+        const cells = getMultipleValuesByClass("itemSelect");
+        const quantities = getMultipleValuesByClass("quantityInput");
+        const prices = getMultipleValuesByClass("priceInput");
+
+        const entry = {
+          name: getElementVal("dcName"),
+          empid_search: getElementVal("employeeIdSearch"),
+          empid_name: getElementVal("employeeIdSearch"),
+          partnername: getElementVal("partnerNameSearch"),
+          clinic: clinics,
+          cell: cells,
+          quant: quantities,
+          price: prices,
+          username: getElementVal("username"),
+          passwd: getElementVal("password"),
+          timestamp: timestamp,
+          fileUrls: [],
+        };
+
+        // Upload files to Firebase Storage
+        for (let i = 0; i < fileInput.files.length; i++) {
+          const file = fileInput.files[i];
+          const fileRef = storageRef(storage, `files/${customKey}/${file.name}`);
+          await uploadBytes(fileRef, file);
+          const downloadURL = await getDownloadURL(fileRef);
+          entry.fileUrls.push(downloadURL);
+          console.log(`File ${file.name} uploaded successfully`);
+        }
+
+        // Save the entry to Firebase using the custom key
+        await set(dbRef(db, `user/${customKey}`), entry);
+        console.log("Data saved successfully");
+
+        // Update the sum of quantities and prices for each clinic item
+        for (let i = 0; i < clinics.length; i++) {
+          const clinic = clinics[i];
+          const cell = cells[i];
+          const quantity = parseFloat(quantities[i]);
+          const price = parseFloat(prices[i]);
+
+          if (clinic && cell && !isNaN(quantity) && !isNaN(price)) {
+            const clinicItemRef = dbRef(db, `clinics/${clinic}/${cell}`);
+
+
+
+            get(clinicItemRef).then((snapshot) => {
+              const clinicData = snapshot.val() || {};
+              const updatedQuantity = (clinicData.quantity || 0) + quantity;
+              const updatedPrice = (clinicData.price || 0) + price;
+
+              update(clinicItemRef, {
+                quantity: updatedQuantity,
+                price: updatedPrice,
+              });
+            });
+          }
+        }
+
+        console.log("Data submitted successfully!");
+        // You might want to reset the form or redirect the user here
+      } catch (error) {
+        console.error("Error submitting data:", error);
+        alert("An error occurred while submitting the data. Please try again.");
+      }
     });
 });
 
 function validateFormData() {
-  const dcName = document.getElementById("dcName").value.trim();
-  const partnerName = document.getElementById("partnerNameSearch").value.trim();
-  const fileInput = document.getElementById("fileInput");
-  const empid = document.getElementById("employeeIdSearch").value.trim();
+  const dcName = getElementVal("dcName");
+  const partnerName = getElementVal("partnerNameSearch");
+  const empid = getElementVal("employeeIdSearch");
 
-
-  if (fileInput.files.length === 0) {
-    alert("Please add a file.");
-    return false;
-  }
-
-  if (dcName === "" || empid === "" ||partnerName === "") {
-    // alert("Please fill the required fields(DC Name, Employee ID, and Partner Name).");
+  if (dcName === "" || empid === "" || partnerName === "") {
     return false;
   }
 
@@ -155,9 +185,6 @@ function validateFormData() {
       quantityInput === "" ||
       priceInput === ""
     ) {
-      // alert(
-      //   "Please fill in all fields for each item, including the Clinic Code."
-      // );
       return false;
     }
   }
