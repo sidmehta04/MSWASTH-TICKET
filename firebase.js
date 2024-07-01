@@ -42,10 +42,10 @@ function getMultipleValuesByClass(fieldClass) {
   const inputs = document.querySelectorAll(`.${fieldClass}`);
   inputs.forEach((input) => {
     const parent = input.closest(".item");
-    
+
     if (fieldClass === "itemSelect") {
       const itemInput = parent.querySelector(".itemInput");
-      
+
       if (input.value === "other" && itemInput.value.trim()) {
         values.push(itemInput.value.trim());
       } else {
@@ -62,32 +62,30 @@ function getMultipleValuesByClass(fieldClass) {
 function generateCustomKey() {
   const empIDInput = getElementVal("employeeIdSearch");
   const timestamp = Date.now();
-  return `${empIDInput}_${timestamp}`;
+  return `${timestamp}_${empIDInput}`;
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  document
-    .getElementById("submit1")
-    .addEventListener("click", async function (e) {
-      e.preventDefault();
+  document.getElementById("submit1").addEventListener("click", async function (e) {
+    e.preventDefault();
 
-      const itemRows = document.querySelectorAll(".item");
-      if (itemRows.length === 0) {
-        return;
-      }
+    const itemRows = document.querySelectorAll(".item");
+    if (itemRows.length === 0) {
+      return;
+    }
 
-      const fileInput = document.getElementById("fileInput");
-      if (fileInput.files.length === 0) {
-        return;
-      }
+    const fileInput = document.getElementById("fileInput");
+    if (fileInput.files.length === 0) {
+      return;
+    }
 
-      if (!validateFormData()) {
-        return;
-      }
-
-      try {
+    try {
+      if (userConfirmed) {
+        console.log(userConfirmed)
+        console.log("Uploading data to Firebase...");
         const timestamp = Date.now();
         const customKey = generateCustomKey();
+        const storageFolderLink = `https://console.firebase.google.com/u/4/project/mswasth-21df5/storage/mswasth-21df5.appspot.com/files/~2Ffiles~2F${customKey}`;
 
         const clinics = getMultipleValuesByClass("clinicCodeInput");
         const cells = getMultipleValuesByClass("itemSelect");
@@ -107,6 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
           passwd: getElementVal("password"),
           timestamp: timestamp,
           fileUrls: [],
+          folderLink: storageFolderLink,
         };
 
         // Upload files to Firebase Storage
@@ -122,72 +121,48 @@ document.addEventListener("DOMContentLoaded", function () {
         // Save the entry to Firebase using the custom key
         await set(dbRef(db, `user/${customKey}`), entry);
         console.log("Data saved successfully");
-
-        // Update the sum of quantities and prices for each clinic item
-        for (let i = 0; i < clinics.length; i++) {
-          const clinic = clinics[i];
-          const cell = cells[i];
-          const quantity = parseFloat(quantities[i]);
-          const price = parseFloat(prices[i]);
-
-          if (clinic && cell && !isNaN(quantity) && !isNaN(price)) {
-            const clinicItemRef = dbRef(db, `clinics/${clinic}/${cell}`);
-
-
-
-            get(clinicItemRef).then((snapshot) => {
-              const clinicData = snapshot.val() || {};
-              const updatedQuantity = (clinicData.quantity || 0) + quantity;
-              const updatedPrice = (clinicData.price || 0) + price;
-
-              update(clinicItemRef, {
-                quantity: updatedQuantity,
-                price: updatedPrice,
-              });
-            });
-          }
-        }
-
-        console.log("Data submitted successfully!");
-        // You might want to reset the form or redirect the user here
-      } catch (error) {
-        console.error("Error submitting data:", error);
-        alert("An error occurred while submitting the data. Please try again.");
+        Swal.fire({
+          icon: 'success',
+          title: 'Data Submitted Successfully.',
+          text: 'Thank You',
+          confirmButtonText: 'OK',
+        }).then((result) => {
+          /* Read more about isConfirmed, isDenied below */
+        });
+        // Optionally, reset the form or redirect the user here
+        document.getElementById("dataForm").reset();
+        translatePage('en');
       }
-    });
+    } catch (error) {
+      console.error("Error submitting data:", error);
+      alert("Firebase: An error occurred while submitting the data. Please try again.");
+      console.log(error);
+    }
+  });
 });
 
-function validateFormData() {
-  const dcName = getElementVal("dcName");
-  const partnerName = getElementVal("partnerNameSearch");
-  const empid = getElementVal("employeeIdSearch");
-
-  if (dcName === "" || empid === "" || partnerName === "") {
-    return false;
-  }
-
-  const items = Array.from(document.querySelectorAll(".item"));
-  for (const item of items) {
-    const clinicCodeInput = item.querySelector(".clinicCodeInput").value.trim();
-    const itemSelect = item.querySelector(".itemSelect").value;
-    const itemInput =
-      item.querySelector(".itemInput").style.display !== "none"
-        ? item.querySelector(".itemInput").value.trim()
-        : null;
-    const itemName = itemSelect !== "other" ? itemSelect : itemInput;
-    const quantityInput = item.querySelector(".quantityInput").value.trim();
-    const priceInput = item.querySelector(".priceInput").value.trim();
-
-    if (
-      clinicCodeInput === "" ||
-      itemName === "" ||
-      itemName === null ||
-      quantityInput === "" ||
-      priceInput === ""
-    ) {
-      return false;
+// Function to add folder links to existing entries
+async function addFolderLinksToExistingEntries() {
+  try {
+    const snapshot = await get(dbRef(db, 'user'));
+    const data = snapshot.val();
+    if (data) {
+      for (const key in data) {
+        if (data.hasOwnProperty(key)) {
+          const entry = data[key];
+          const storageFolderLink = `https://console.firebase.google.com/u/4/project/mswasth-21df5/storage/mswasth-21df5.appspot.com/files/~2Ffiles~2F${key}`;
+          await update(dbRef(db, `user/${key}`), { folderLink: storageFolderLink });
+          console.log(`Folder link added to entry with key: ${key}`);
+        }
+      }
+      console.log("All folder links added successfully");
+    } else {
+      console.log("No existing entries found.");
     }
+  } catch (error) {
+    console.error("Error adding folder links:", error);
   }
-
-  return true;
 }
+
+// Call the function to add folder links to existing entries
+addFolderLinksToExistingEntries();
