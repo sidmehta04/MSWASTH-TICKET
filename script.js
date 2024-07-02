@@ -482,6 +482,7 @@ document.addEventListener("DOMContentLoaded", function () {
     .addEventListener("input", filterEmpIDOptions);
 });
 
+
 document.addEventListener("DOMContentLoaded", function () {
   const toggleDarkMode = () => {
     document.body.classList.toggle("dark-mode");
@@ -494,6 +495,8 @@ document.addEventListener("DOMContentLoaded", function () {
   darkModeButton.addEventListener("click", toggleDarkMode);
 
   document.body.appendChild(darkModeButton);
+  document.getElementById("toggle-button").style.display = "none";
+  
 });
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -538,6 +541,9 @@ document.addEventListener("DOMContentLoaded", function () {
     if (users[username] && users[username] === password) {
       document.getElementById("loginForm").style.display = "none";
       document.querySelector(".container").style.display = "block";
+      document.getElementById("instructionsButton").style.display = "block";
+      document.getElementById("toggle-button").style.display = "block";
+      document.getElementById("clearFormButton").style.display = "block";
     } else {
       document.getElementById("loginError").style.display = "block";
     }
@@ -545,6 +551,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Initially hide the main content until login is successful
   document.querySelector(".container").style.display = "none";
+  document.getElementById("instructionsButton").style.display = "none";
+  document.getElementById("toggle-button").style.display = "none";
+  document.getElementById("clearFormButton").style.display = "none";
+  
 
   // Instructions for adding more users
   console.log(
@@ -562,6 +572,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Append the Instructions button to the body
   document.body.appendChild(instructionsButton);
+  document.getElementById("instructionsButton").style.display = "none";
 
   // Create the modal for instructions
   const instructionsModal = document.createElement("div");
@@ -584,7 +595,7 @@ document.addEventListener("DOMContentLoaded", function () {
       </div>
   `;
   document.body.appendChild(instructionsModal);
-
+  
   // Function to show instructions modal
   function showInstructions() {
     instructionsModal.style.display = "block";
@@ -674,4 +685,5 @@ function highlightEmptyFields() {
     }
 
     totalSumDisplay.textContent = `Total Sum: ₹${totalSum}`;
-  }
+}
+  

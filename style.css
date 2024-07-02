@@ -309,11 +309,15 @@ select {
   background-color: darkgray;
 }
 
-.dark-mode .language-selector ~{
-  background-color: #555;
+.dark-mode .language-selector {
+  background-color: #333;
 }
 
-.dark-mode .file-input-container {
+.dark-mode .file-input-container{
+  background-color: #333;
+}
+
+.dark-mode .file-input-container label{
   background-color: #555;
 }
 
@@ -426,8 +430,8 @@ select {
   cursor: pointer;
   animation: fadeInUp 1s ease-out;
   margin-left: 30px;
-  /* margin-top: 8px; */
   width: 170px;
+  display: none;
 }
 
 .clearBtn:hover {
