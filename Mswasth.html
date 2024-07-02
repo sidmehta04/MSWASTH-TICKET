@@ -22,6 +22,14 @@
     ></script> -->
   </head>
   <body>
+    <div class="main-header">
+      <img
+        src="https://mswasthticket1.tiiny.site/download-removebg-preview.png"
+        alt="MSWasth Furniture Store Logo"
+        class="logo1"
+      />
+      <span class="header-text">M-SWASTH Solutions Pvt Ltd</span>
+    </div>
     <div class="container">
       <div class="header">
         <h1
@@ -34,14 +42,11 @@
           src="https://mswasthticket1.tiiny.site/download-removebg-preview.png"
           alt="MSWasth Furniture Store Logo"
           id="logo"
+          style="background-color: white; border-radius: 50%"
         />
       </div>
-
       <form id="dataForm">
-        <div
-          
-          class="language-selector"
-        >
+        <div class="language-selector">
           <input type="radio" id="lang-en" name="language" value="en" checked />
           <label for="lang-en">English</label>
           <input type="radio" id="lang-hi" name="language" value="hi" />
@@ -54,6 +59,7 @@
             <input
               type="file"
               id="fileInput"
+              class="file"
               accept=".png,.jpg,.pdf"
               multiple=""
               placeholder="b"
@@ -186,8 +192,6 @@
               <option value="MS01558">MS01558</option>
               <option value="MS02530">MS02530</option>
               <option value="Other">Other</option>
-
-              <!-- Add more options as needed -->
             </select>
           </div>
         </div>
@@ -350,7 +354,6 @@
               <option value="North East Small Finance Bank - SHG">
                 North East Small Finance Bank - SHG
               </option>
-
             </select>
           </div>
         </div>
@@ -371,7 +374,7 @@
           class="submitBtn"
           id="submit1"
           onclick="submitData();"
-          >
+        >
           Submit
         </button>
       </form>
