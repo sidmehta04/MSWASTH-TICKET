@@ -39,12 +39,8 @@
 
       <form id="dataForm">
         <div
-          style="
-            background-color: #e5e5e561;
-            padding: 1%;
-            margin-bottom: 2%;
-            text-align: center;
-          "
+          
+          class="language-selector"
         >
           <input type="radio" id="lang-en" name="language" value="en" checked />
           <label for="lang-en">English</label>
@@ -53,13 +49,17 @@
           <input type="radio" id="lang-bn" name="language" value="bn" />
           <label for="lang-bn">বাংলা</label>
         </div>
-        <input
-          type="file"
-          id="fileInput"
-          accept=".png,.jpg,.pdf"
-          multiple=""
-          placeholder="b"
-        />
+        <div class="file-input-container">
+          <label for="fileInput">
+            <input
+              type="file"
+              id="fileInput"
+              accept=".png,.jpg,.pdf"
+              multiple=""
+              placeholder="b"
+            />
+          </label>
+        </div>
         <input type="text" id="dcName" placeholder="DC Name" required="" />
         <div class="dropdown-container">
           <!-- <input type="text" id="empIDSearch" placeholder="Search Employee ID" > -->
