@@ -133,6 +133,7 @@ select {
   border-radius: 5px;
   padding: 10px 20px;
   cursor: pointer;
+  margin-top: 12px;
   animation: fadeInUp 1s ease-out;
 }
 
