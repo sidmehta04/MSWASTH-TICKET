@@ -19,7 +19,7 @@ function addItem() {
   const itemDiv = document.createElement("div");
   itemDiv.className = "item";
   itemDiv.innerHTML = `
-    <input type="text" placeholder="Clinic Code" class="clinicCodeInput" required maxlength="10" id="clinic"/> 
+    <input type="text" placeholder="Clinic Code" class="clinicCodeInput" required maxlength="10"/> 
     <select class="itemSelect" onchange="toggleCustomItemInput(this)">
       <option value="cells">Cells</option>
       <option value="shelf">Shelf</option>

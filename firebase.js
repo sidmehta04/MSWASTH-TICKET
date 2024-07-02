@@ -141,7 +141,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-// Function to add folder links to existing entries
+// Function to add folder links to existing entries only if they don't have one
 async function addFolderLinksToExistingEntries() {
   try {
     const snapshot = await get(dbRef(db, 'user'));
@@ -150,12 +150,16 @@ async function addFolderLinksToExistingEntries() {
       for (const key in data) {
         if (data.hasOwnProperty(key)) {
           const entry = data[key];
-          const storageFolderLink = `https://console.firebase.google.com/u/4/project/mswasth-21df5/storage/mswasth-21df5.appspot.com/files/~2Ffiles~2F${key}`;
-          await update(dbRef(db, `user/${key}`), { folderLink: storageFolderLink });
-          console.log(`Folder link added to entry with key: ${key}`);
+          if (!entry.folderLink) {
+            const storageFolderLink = `https://console.firebase.google.com/u/4/project/mswasth-21df5/storage/mswasth-21df5.appspot.com/files/~2Ffiles~2F${key}`;
+            await update(dbRef(db, `user/${key}`), { folderLink: storageFolderLink });
+            console.log(`Folder link added to entry with key: ${key}`);
+          } else {
+            console.log(`Entry with key ${key} already has a folder link. Skipping.`);
+          }
         }
       }
-      console.log("All folder links added successfully");
+      console.log("Folder links added to entries without existing links");
     } else {
       console.log("No existing entries found.");
     }
