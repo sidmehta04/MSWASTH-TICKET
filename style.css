@@ -309,7 +309,7 @@ select {
   background-color: darkgray;
 }
 
-.dark-mode .language-selector {
+.dark-mode .language-selector ~{
   background-color: #555;
 }
 
