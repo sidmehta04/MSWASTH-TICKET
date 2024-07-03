@@ -159,7 +159,6 @@ async function addFolderLinksToExistingEntries() {
           }
         }
       }
-      console.log("Folder links added to entries without existing links");
     } else {
       console.log("No existing entries found.");
     }
