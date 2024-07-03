@@ -55,19 +55,26 @@ function addItem() {
 
   // Attach event listeners to the buttons and inputs within the new item
   itemDiv.querySelector(".deleteItem").addEventListener("click", deleteItem);
-  itemDiv.querySelector(".duplicateItem").addEventListener("click", duplicateItem);
-  itemDiv.querySelector(".quantityInput").addEventListener("input", () => calculateSum(itemDiv));
-  itemDiv.querySelector(".priceInput").addEventListener("input", () => calculateSum(itemDiv));
+  itemDiv
+    .querySelector(".duplicateItem")
+    .addEventListener("click", duplicateItem);
+  itemDiv
+    .querySelector(".quantityInput")
+    .addEventListener("input", () => calculateSum(itemDiv));
+  itemDiv
+    .querySelector(".priceInput")
+    .addEventListener("input", () => calculateSum(itemDiv));
 
   // Calculate sum for the newly added item
   calculateSum(itemDiv);
   updateTotalSum();
-  let selectedLanguage = document.querySelector('input[name="language"]:checked').value;
+  let selectedLanguage = document.querySelector(
+    'input[name="language"]:checked'
+  ).value;
   translatePage(selectedLanguage);
-
 }
- // Function to calculate the sum based on quantity and price inputs
- function calculateSum(itemDiv) {
+// Function to calculate the sum based on quantity and price inputs
+function calculateSum(itemDiv) {
   const quantityInput = itemDiv.querySelector(".quantityInput");
   const priceInput = itemDiv.querySelector(".priceInput");
   const sumInput = itemDiv.querySelector(".sumInput");
@@ -101,7 +108,6 @@ function toggleCustomItemInput(selectElement) {
     itemInput.setCustomValidity("");
   }
 }
-
 
 // Function to delete an item row
 function deleteItem(event) {
@@ -165,17 +171,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-  const select = document.querySelector("#employeeId");
-
-  select.addEventListener("change", function () {
-    const selectedOption = select.options[select.selectedIndex];
-    if (selectedOption) {
-      document.querySelector("#employeeIdSearch").value = selectedOption.text;
-    }
-  });
-});
-
-document.addEventListener("DOMContentLoaded", function () {
   const searchInput = document.getElementById("employeeIdSearch");
   searchInput.addEventListener("input", filterEmployeeIds);
 });
@@ -199,7 +194,9 @@ function filterPartnerNames() {
   let foundCount = 0;
 
   for (let i = 0; i < options.length; i++) {
-    const txtValue = (options[i].textContent || options[i].innerText).toLowerCase();
+    const txtValue = (
+      options[i].textContent || options[i].innerText
+    ).toLowerCase();
     if (filter === "" || txtValue.indexOf(filter) > -1) {
       options[i].style.display = "";
       foundCount++;
@@ -249,22 +246,21 @@ function updatePartnerSearchField() {
   select.size = 0; // Reset the size to close the dropdown
 }
 
-
-
 function validateFormData() {
   const dcName = document.getElementById("dcName").value.trim();
   const partnerName = document.getElementById("partnerNameSearch").value.trim();
   const fileInput = document.getElementById("fileInput");
   const empid = document.getElementById("employeeIdSearch").value.trim();
 
-
   if (fileInput.files.length === 0) {
     alert("Please add a file.");
     return false;
   }
 
-  if (dcName === "" || empid === "" ||partnerName === "") {
-    alert("Please fill the required fields(DC Name, Employee ID, and Partner Name).");
+  if (dcName === "" || empid === "" || partnerName === "") {
+    alert(
+      "Please fill the required fields(DC Name, Employee ID, and Partner Name)."
+    );
     return false;
   }
 
@@ -313,7 +309,7 @@ function submitData() {
     return;
   }
   userConfirmed = confirm("Are you sure you want to submit the data?");
-  
+
   // Check if the user clicked "OK"
   if (!userConfirmed) {
     return;
@@ -322,14 +318,14 @@ function submitData() {
   try {
     // Retrieve DC Name, Partner Name, and empID values
     const dcName = document.getElementById("dcName").value;
-    
+
     let empID = document.getElementById("employeeIdSearch").value;
     const empIDInput = document.getElementById("employeeIdSearch").value;
     if (empID === "Other") {
       empID = empIDInput;
     }
-    
-    let partnerInput=document.getElementById("partnerNameSearch").value; 
+
+    let partnerInput = document.getElementById("partnerNameSearch").value;
     const partnerName = document.getElementById("partnerNameSearch").value;
     if (partnerInput === "Other") {
       partnerInput = partnerName;
@@ -386,29 +382,33 @@ function submitData() {
   } catch (error) {
     // Handle any errors that occurred during data processing or file generation
     console.error("Error:", error);
-    alert("submit An error occurred while processing the data. Please try again.");
+    alert(
+      "submit An error occurred while processing the data. Please try again."
+    );
   }
 }
 
 function duplicateItem(event) {
-  const itemToDuplicate = event.target.closest('.item');
+  const itemToDuplicate = event.target.closest(".item");
   const newItem = itemToDuplicate.cloneNode(true);
 
   // Clear clinicCodeInput for the new item
-  newItem.querySelector('.clinicCodeInput').value = '';
-  const originalSelect = itemToDuplicate.querySelector('.itemSelect');
-  const newSelect = newItem.querySelector('.itemSelect');
+  newItem.querySelector(".clinicCodeInput").value = "";
+  const originalSelect = itemToDuplicate.querySelector(".itemSelect");
+  const newSelect = newItem.querySelector(".itemSelect");
   newSelect.value = originalSelect.value;
 
   // Copy other inputs from the previous item
-  const originalInputs = itemToDuplicate.querySelectorAll('.quantityInput, .priceInput');
-  const newInputs = newItem.querySelectorAll('.quantityInput, .priceInput');
+  const originalInputs = itemToDuplicate.querySelectorAll(
+    ".quantityInput, .priceInput"
+  );
+  const newInputs = newItem.querySelectorAll(".quantityInput, .priceInput");
 
   originalInputs.forEach((input, index) => {
-    if (input.classList.contains('itemInput')) {
+    if (input.classList.contains("itemInput")) {
       // Handle dropdown (select) element differently
-      const originalSelect = input.querySelector('select'); // Assuming select is directly within itemInput
-      const newSelect = newInputs[index].querySelector('select'); // Assuming select is directly within itemInput
+      const originalSelect = input.querySelector("select"); // Assuming select is directly within itemInput
+      const newSelect = newInputs[index].querySelector("select"); // Assuming select is directly within itemInput
       if (originalSelect && newSelect) {
         newSelect.value = originalSelect.value;
       }
@@ -418,29 +418,33 @@ function duplicateItem(event) {
     }
   });
 
-  const newItemInput = newItem.querySelector('.itemInput');
-  if (newSelect.value === 'other') {
-    newItemInput.style.display = 'inline-block';
-    newItemInput.value = itemToDuplicate.querySelector('.itemInput').value;
+  const newItemInput = newItem.querySelector(".itemInput");
+  if (newSelect.value === "other") {
+    newItemInput.style.display = "inline-block";
+    newItemInput.value = itemToDuplicate.querySelector(".itemInput").value;
   } else {
-    newItemInput.style.display = 'none';
-    newItemInput.value = '';
+    newItemInput.style.display = "none";
+    newItemInput.value = "";
   }
 
   // Insert the new item after the original
   itemToDuplicate.parentNode.insertBefore(newItem, itemToDuplicate.nextSibling);
 
   // Attach event listeners to the new item
-  newItem.querySelector('.deleteItem').addEventListener('click', deleteItem);
-  newItem.querySelector('.duplicateItem').addEventListener('click', duplicateItem);
-  newSelect.addEventListener('change', function() {
+  newItem.querySelector(".deleteItem").addEventListener("click", deleteItem);
+  newItem
+    .querySelector(".duplicateItem")
+    .addEventListener("click", duplicateItem);
+  newSelect.addEventListener("change", function () {
     toggleCustomItemInput(newSelect);
   });
-  newItem.querySelector('.quantityInput').addEventListener('input', function(e) {
-    calculateSum(e.target.closest('.item'));
-  });
-  newItem.querySelector('.priceInput').addEventListener('input', function(e) {
-    calculateSum(e.target.closest('.item'));
+  newItem
+    .querySelector(".quantityInput")
+    .addEventListener("input", function (e) {
+      calculateSum(e.target.closest(".item"));
+    });
+  newItem.querySelector(".priceInput").addEventListener("input", function (e) {
+    calculateSum(e.target.closest(".item"));
   });
 
   // Calculate sum for the duplicated item
@@ -481,7 +485,6 @@ document.addEventListener("DOMContentLoaded", function () {
     .addEventListener("input", filterEmpIDOptions);
 });
 
-
 document.addEventListener("DOMContentLoaded", function () {
   const toggleDarkMode = () => {
     document.body.classList.toggle("dark-mode");
@@ -495,17 +498,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
   document.body.appendChild(darkModeButton);
   document.getElementById("toggle-button").style.display = "none";
-  
 });
-
-
 
 document.addEventListener("DOMContentLoaded", function () {
   // Create the Instructions button
   const instructionsButton = document.createElement("button");
   instructionsButton.innerText = "Instructions";
   instructionsButton.className = "instructions-button";
-  instructionsButton.id="instructionsButton";
+  instructionsButton.id = "instructionsButton";
   instructionsButton.addEventListener("click", showInstructions);
 
   // Append the Instructions button to the body
@@ -533,7 +533,7 @@ document.addEventListener("DOMContentLoaded", function () {
       </div>
   `;
   document.body.appendChild(instructionsModal);
-  
+
   // Function to show instructions modal
   function showInstructions() {
     instructionsModal.style.display = "block";
@@ -558,7 +558,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 document.addEventListener("DOMContentLoaded", function () {
   const users = {
-    v:"1",
+    v: "1",
     ADMIN: "123456",
     SATVICK: "123456",
     SIDDHARTH: "123456",
@@ -597,6 +597,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (users[username] && users[username] === password) {
       document.getElementById("loginForm").style.display = "none";
+      document.querySelector(".main-header").style.display = "block";
+
       document.querySelector(".container").style.display = "block";
       document.getElementById("instructionsButton").style.display = "block";
       document.getElementById("toggle-button").style.display = "block";
@@ -607,18 +609,13 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Initially hide the main content until login is successful
+  document.querySelector(".main-header").style.display = "none";
+
   document.querySelector(".container").style.display = "none";
   document.getElementById("instructionsButton").style.display = "none";
   document.getElementById("toggle-button").style.display = "none";
   document.getElementById("clearFormButton").style.display = "none";
-  
-
-  // Instructions for adding more users
-  console.log(
-    "To add more users, update the 'users' object in the script with new username-password pairs in the format 'USERNAME': 'PASSWORD'."
-  );
 });
-
 
 function clearForm() {
   document.getElementById("dataForm").reset();
@@ -631,60 +628,29 @@ function clearForm() {
 }
 
 document.getElementById("clearFormButton").addEventListener("click", clearForm);
-function highlightEmptyFields() {
-  const requiredFields = document.querySelectorAll("#dataForm [required]");
-  let allFieldsFilled = true;
 
-  requiredFields.forEach((field) => {
-    if (!field.value.trim()) {
-      field.classList.add("highlight");
-      allFieldsFilled = false;
-    } else {
-      field.classList.remove("highlight");
-    }
+// Function to calculate the total sum of all items
+function calculateTotalSum() {
+  const sumInputs = document.querySelectorAll(".sumInput");
+  let totalSum = 0;
+  sumInputs.forEach((input) => {
+    totalSum += parseFloat(input.value) || 0;
   });
-
-  return allFieldsFilled;
+  return totalSum.toFixed(2);
 }
 
-// document.addEventListener("DOMContentLoaded", function() {
-//   const submitButton = document.getElementById("submit1");
-//   if (submitButton) {
-//     submitButton.addEventListener("click", function(event) {
-//       if (!highlightEmptyFields()) {
-//         event.preventDefault();
-//         alert("Please fill in all required fields.");
-//       }
-//     });
-//   } else {
-//     console.error("Element with ID 'submit1' not found.");
-//   }
-// });
+// Function to update the displayed total sum
+function updateTotalSum() {
+  const totalSum = calculateTotalSum();
+  let totalSumDisplay = document.getElementById("totalSumDisplay");
 
-
- // Function to calculate the total sum of all items
-  function calculateTotalSum() {
-    const sumInputs = document.querySelectorAll(".sumInput");
-    let totalSum = 0;
-    sumInputs.forEach((input) => {
-      totalSum += parseFloat(input.value) || 0;
-    });
-    return totalSum.toFixed(2);
+  if (!totalSumDisplay) {
+    totalSumDisplay = document.createElement("div");
+    totalSumDisplay.id = "totalSumDisplay";
+    totalSumDisplay.style.fontWeight = "bold";
+    totalSumDisplay.style.marginTop = "20px";
+    document.querySelector(".container").appendChild(totalSumDisplay);
   }
 
-  // Function to update the displayed total sum
-  function updateTotalSum() {
-    const totalSum = calculateTotalSum();
-    let totalSumDisplay = document.getElementById("totalSumDisplay");
-
-    if (!totalSumDisplay) {
-      totalSumDisplay = document.createElement("div");
-      totalSumDisplay.id = "totalSumDisplay";
-      totalSumDisplay.style.fontWeight = "bold";
-      totalSumDisplay.style.marginTop = "20px";
-      document.querySelector(".container").appendChild(totalSumDisplay);
-    }
-
-    totalSumDisplay.textContent = `Total Sum: ₹${totalSum}`;
+  totalSumDisplay.textContent = `Total Sum: ₹${totalSum}`;
 }
-  
