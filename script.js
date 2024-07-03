@@ -266,7 +266,6 @@ function validateFormData() {
   if (dcName === "" || empid === "" ||partnerName === "") {
     alert("Please fill the required fields(DC Name, Employee ID, and Partner Name).");
     return false;
-    return false;
   }
 
   const items = Array.from(document.querySelectorAll(".item"));
@@ -499,6 +498,64 @@ document.addEventListener("DOMContentLoaded", function () {
   
 });
 
+
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Create the Instructions button
+  const instructionsButton = document.createElement("button");
+  instructionsButton.innerText = "Instructions";
+  instructionsButton.className = "instructions-button";
+  instructionsButton.id="instructionsButton";
+  instructionsButton.addEventListener("click", showInstructions);
+
+  // Append the Instructions button to the body
+  document.body.appendChild(instructionsButton);
+  document.getElementById("instructionsButton").style.display = "none";
+
+  // Create the modal for instructions
+  const instructionsModal = document.createElement("div");
+  instructionsModal.id = "instructionsModal";
+  instructionsModal.className = "modal";
+  instructionsModal.innerHTML = `
+      <div class="modal-content">
+
+          <span class="close-button">&times;</span>
+          <h2 id="instruction" style="background-color: #e5e5e5; margin-top:40px;color: black; padding: 5px; text-align: center; font-size:15px;">INSTRUCTIONS</h2>
+          <ul>
+              <li id="a">Click on "Add Another Item" to add items.</li>
+              <li id="b">Click on "Any type of file can be uploaded here but make sure 1 file is selected</li>
+              <li id="c">In "Price", enter the per quantity, per unit price.</li>
+              <li id="d">Click on "For any Doubt Pin me on the group or connect with your manager</li>
+              <li id="e">Click on "If your EMP_ID is missing you can select the other option there it will auto add the new one for you/</li>
+              <li id="f" >In "Item", specify the quantity purchased it will auto capture the sum amount.</li>
+              <li id="g">In "EMP ID", select from the available IDs. If not available, it will automatically select "Other".</li>
+          </ul>
+      </div>
+  `;
+  document.body.appendChild(instructionsModal);
+  
+  // Function to show instructions modal
+  function showInstructions() {
+    instructionsModal.style.display = "block";
+  }
+
+  // Function to hide instructions modal
+  function hideInstructions() {
+    instructionsModal.style.display = "none";
+  }
+
+  // Close the modal when the user clicks on the close button
+  instructionsModal
+    .querySelector(".close-button")
+    .addEventListener("click", hideInstructions);
+
+  // Close the modal when the user clicks anywhere outside of the modal content
+  window.addEventListener("click", function (event) {
+    if (event.target === instructionsModal) {
+      hideInstructions();
+    }
+  });
+});
 document.addEventListener("DOMContentLoaded", function () {
   const users = {
     v:"1",
@@ -562,62 +619,6 @@ document.addEventListener("DOMContentLoaded", function () {
   );
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-  // Create the Instructions button
-  const instructionsButton = document.createElement("button");
-  instructionsButton.innerText = "Instructions";
-  instructionsButton.className = "instructions-button";
-  instructionsButton.id="instructionsButton";
-  instructionsButton.addEventListener("click", showInstructions);
-
-  // Append the Instructions button to the body
-  document.body.appendChild(instructionsButton);
-  document.getElementById("instructionsButton").style.display = "none";
-
-  // Create the modal for instructions
-  const instructionsModal = document.createElement("div");
-  instructionsModal.id = "instructionsModal";
-  instructionsModal.className = "modal";
-  instructionsModal.innerHTML = `
-      <div class="modal-content">
-
-          <span class="close-button">&times;</span>
-          <h2 id="instruction" style="background-color: #e5e5e5; margin-top:40px;color: black; padding: 5px; text-align: center; font-size:15px;">INSTRUCTIONS</h2>
-          <ul>
-              <li id="a">Click on "Add Another Item" to add items.</li>
-              <li id="b">Click on "Any type of file can be uploaded here but make sure 1 file is selected</li>
-              <li id="c">In "Price", enter the per quantity, per unit price.</li>
-              <li id="d">Click on "For any Doubt Pin me on the group or connect with your manager</li>
-              <li id="e">Click on "If your EMP_ID is missing you can select the other option there it will auto add the new one for you/</li>
-              <li id="f" >In "Item", specify the quantity purchased it will auto capture the sum amount.</li>
-              <li id="g">In "EMP ID", select from the available IDs. If not available, it will automatically select "Other".</li>
-          </ul>
-      </div>
-  `;
-  document.body.appendChild(instructionsModal);
-  
-  // Function to show instructions modal
-  function showInstructions() {
-    instructionsModal.style.display = "block";
-  }
-
-  // Function to hide instructions modal
-  function hideInstructions() {
-    instructionsModal.style.display = "none";
-  }
-
-  // Close the modal when the user clicks on the close button
-  instructionsModal
-    .querySelector(".close-button")
-    .addEventListener("click", hideInstructions);
-
-  // Close the modal when the user clicks anywhere outside of the modal content
-  window.addEventListener("click", function (event) {
-    if (event.target === instructionsModal) {
-      hideInstructions();
-    }
-  });
-});
 
 function clearForm() {
   document.getElementById("dataForm").reset();
