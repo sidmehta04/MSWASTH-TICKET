@@ -451,11 +451,28 @@ select {
   animation: fadeInUp 1s ease-out;
   margin-left: 30px;
   width: 170px;
-  display: none;
+  /* display: none; */
 }
 
 .clearBtn:hover {
   background-color: #ff0000b0; /* Darker red */
+}
+
+.logoutBtn {
+  /* background-color: #009dff; */
+  top: 170px;
+  right: 10px;
+  position: fixed;
+  background-color: #f75e59e1;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  animation: fadeInUp 1s ease-out;
+  margin-left: 30px;
+  width: 170px;
+  /* display: none; */
 }
 
 @keyframes slideInUp {

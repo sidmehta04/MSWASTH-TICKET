@@ -1,5 +1,19 @@
 let userConfirmed = false;
 
+var dataemployeeIds = JSON.parse(localStorage.getItem('dataemployeeids'));
+  console.log("Employee IDs fetched:");
+  console.log(dataemployeeIds);
+  const select = document.getElementById('employeeId');
+  dataemployeeIds.forEach(id => {
+      console.log(id);
+      console.log("hi");
+      const option = document.createElement('option');
+      option.value = id;
+      option.textContent = id;
+      select.appendChild(option);
+    });
+
+
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("addItemButton").addEventListener("click", addItem);
 
@@ -497,7 +511,7 @@ document.addEventListener("DOMContentLoaded", function () {
   darkModeButton.addEventListener("click", toggleDarkMode);
 
   document.body.appendChild(darkModeButton);
-  document.getElementById("toggle-button").style.display = "none";
+  // document.getElementById("toggle-button").style.display = "none";
 });
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -510,7 +524,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Append the Instructions button to the body
   document.body.appendChild(instructionsButton);
-  document.getElementById("instructionsButton").style.display = "none";
+  // document.getElementById("instructionsButton").style.display = "none";
 
   // Create the modal for instructions
   const instructionsModal = document.createElement("div");
@@ -556,66 +570,86 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
-document.addEventListener("DOMContentLoaded", function () {
-  const users = {
-    v: "1",
-    ADMIN: "123456",
-    SATVICK: "123456",
-    SIDDHARTH: "123456",
-    PRAKASH: "123456",
-    HIMANSHU: "123456",
-    RAVI: "123456",
-    DEBAL: "123456",
-    AMBIKA: "123456",
-    NAVNEET: "123456",
-    SAURAB: "123456",
-    ABHISHEK: "123456",
-    SHAIRA: "123456",
-    Gauranga: "123456",
-    suryakant: "123456",
-    // Add more users here in the format "USERNAME": "PASSWORD"
-  };
 
-  const loginForm = document.createElement("form");
-  loginForm.id = "loginForm";
-  loginForm.innerHTML = `
-  <div class="login-container">
-      <h2>Login</h2>
-      <input type="text" id="username" placeholder="Username" required>
-      <input type="password" id="password" placeholder="Password" required>
-      <p>
-      <button type="submit">Login</button>
-      <div id="loginError" style="color: red; display: none;">Incorrect username or password</div>
-  </div>
-  `;
-  document.body.appendChild(loginForm);
 
-  loginForm.addEventListener("submit", function (event) {
-    event.preventDefault();
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
+// document.addEventListener("DOMContentLoaded", function () {
+//   const users = {
+//     v: "1",
+//     SATVICK: "123456",
+//     SIDDHARTH: "123456",
+//     PRAKASH: "123456",
+//     HIMANSHU: "123456",
+//     RAVI: "123456",
+//     DEBAL: "123456",
+//     AMBIKA: "123456",
+//     NAVNEET: "123456",
+//     SAURAB: "123456",
+//     ABHISHEK: "123456",
+//     SHAIRA: "123456",
+//     Gauranga: "123456",
+//     suryakant: "123456",
+//     // Add more users here in the format "USERNAME": "PASSWORD"
+//   };
 
-    if (users[username] && users[username] === password) {
-      document.getElementById("loginForm").style.display = "none";
-      document.querySelector(".main-header").style.display = "block";
+//   const admins = {
+//         q: "1",
+//         ADMIN1: "adminpass1",
+//         ADMIN2: "adminpass2",
+//         ADMIN3: "adminpass3",
+//         // Add more admins here in the format "USERNAME": "PASSWORD"
+//       };
 
-      document.querySelector(".container").style.display = "block";
-      document.getElementById("instructionsButton").style.display = "block";
-      document.getElementById("toggle-button").style.display = "block";
-      document.getElementById("clearFormButton").style.display = "block";
-    } else {
-      document.getElementById("loginError").style.display = "block";
-    }
-  });
+//   const loginForm = document.createElement("form");
+//   loginForm.id = "loginForm";
+//   loginForm.innerHTML = `
+//   <div class="login-container">
+//       <h2>Login</h2>
+//       <input type="text" id="username" placeholder="Username" required>
+//       <input type="password" id="password" placeholder="Password" required>
+//       <p>
+//       <button type="submit">Login</button>
+//       <div id="loginError" style="color: red; display: none;">Incorrect username or password</div>
+//   </div>
+//   `;
+//   document.body.appendChild(loginForm);
 
-  // Initially hide the main content until login is successful
-  document.querySelector(".main-header").style.display = "none";
+//   loginForm.addEventListener("submit", function (event) {
+//     event.preventDefault();
+//     const username = document.getElementById("username").value;
+//     const password = document.getElementById("password").value;
 
-  document.querySelector(".container").style.display = "none";
-  document.getElementById("instructionsButton").style.display = "none";
-  document.getElementById("toggle-button").style.display = "none";
-  document.getElementById("clearFormButton").style.display = "none";
-});
+//     if (users[username] && users[username] === password) {
+//       document.getElementById("loginForm").style.display = "none";
+//       document.querySelector(".main-header").style.display = "block";
+
+//       document.querySelector(".container").style.display = "block";
+//       document.getElementById("instructionsButton").style.display = "block";
+//       document.getElementById("toggle-button").style.display = "block";
+//       document.getElementById("clearFormButton").style.display = "block";
+//     }
+//     else if(admins[username] && admins[username] === password) {
+//       document.getElementById("loginForm").style.display = "none";
+//       document.querySelector(".admin-container").style.display = "block";
+
+//     }
+//     else {
+//       document.getElementById("loginError").style.display = "block";
+
+      
+//     }
+//   });
+
+//   // Initially hide the main content until login is successful
+//   document.querySelector(".main-header").style.display = "none";
+
+//   document.querySelector(".container").style.display = "block";
+//   document.getElementById("instructionsButton").style.display = "none";
+//   document.getElementById("toggle-button").style.display = "none";
+//   document.getElementById("clearFormButton").style.display = "none";
+
+
+// });
+
 
 function clearForm() {
   document.getElementById("dataForm").reset();
@@ -628,6 +662,15 @@ function clearForm() {
 }
 
 document.getElementById("clearFormButton").addEventListener("click", clearForm);
+
+function logout()
+{
+  window.location.href = "index.html";
+}
+document.getElementById("logoutButton").addEventListener("click", logout);
+
+
+
 
 // Function to calculate the total sum of all items
 function calculateTotalSum() {

@@ -155,7 +155,7 @@ async function addFolderLinksToExistingEntries() {
             await update(dbRef(db, `user/${key}`), { folderLink: storageFolderLink });
             console.log(`Folder link added to entry with key: ${key}`);
           } else {
-            console.log(`Entry with key ${key} already has a folder link. Skipping.`);
+            // console.log(`Entry with key ${key} already has a folder link. Skipping.`);
           }
         }
       }
