@@ -5,13 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Welcome to the Furniture Store Page</title>
     <link rel="stylesheet" href="style.css" />
-    <button type="button" id="clearFormButton" class="clearBtn">
-      Clear Form
-    </button>
-    <button type="button" id="logoutButton" class="logoutBtn">
-      Logout
-    </button>
-    <!-- <script src="script.js"></script> -->
   </head>
   <body>
     <div class="main-header">
@@ -60,130 +53,17 @@
         </div>
         <input type="text" id="dcName" placeholder="DC Name" required="" />
         <div class="dropdown-container">
-          <!-- <input type="text" id="empIDSearch" placeholder="Search Employee ID" > -->
           <input
             type="text"
             id="employeeIdSearch"
-            oninput="filterEmployeeIds()"
             placeholder="Search Employee ID"
           />
           <div class="dropdown-content">
-            <select
-              id="employeeId"
-              onchange="updateSearchField()"
-              oninput="filterEmployeeIds()"
-            >
-              <!-- <select id="empID" onchange="updateSearchField()"> -->
-              <option id="placeholderOption" value="" disabled="" selected="">
+            <select id="employeeId">
+              <option value="" disabled="" selected>
                 Select Employee ID
               </option>
-              <!-- <option value="MS00147">MS00147</option>
-              <option value="MS00148">MS00148</option>
-              <option value="MS00149">MS00149</option>
-              <option value="Ms01699">MS01699</option>
-              <option value="MS01514 ">MS01514</option>
-              <option value="MS00233">MS00233</option>
-              <option value="MSO1507">MSO1507</option>
-              <option value="MS01568">MS01568</option>
-              <option value="MS01525">MS01525</option>
-              <option value="MS00237">MS00237</option>
-              <option value="MS00277">MS00277</option>
-              <option value="MS00302">MS00302</option>
-              <option value="MS00303">MS00303</option>
-              <option value="MS00309">MS00309</option>
-              <option value="MS00317">MS00317</option>
-              <option value="MS00318">MS00318</option>
-              <option value="MS00319">MS00319</option>
-              <option value="MS00320">MS00320</option>
-              <option value="MS00322">MS00322</option>
-              <option value="MS00324">MS00324</option>
-              <option value="MS00354">MS00354</option>
-              <option value="MS00355">MS00355</option>
-              <option value="MS01698">MS01698</option>
-              <option value="MS01703">MS01703</option>
-              <option value="MS00364">MS00364</option>
-              <option value="MS00370">MS00370</option>
-              <option value="MS00371">MS00371</option>
-              <option value="MS00372">MS00372</option>
-              <option value="MS00374">MS00374</option>
-              <option value="MS00394">MS00394</option>
-              <option value="MS00399">MS00399</option>
-              <option value="MS00401">MS00401</option>
-              <option value="MS00409">MS00409</option>
-              <option value="MS00410">MS00410</option>
-              <option value="MS00454">MS00454</option>
-              <option value="MS00457">MS00457</option>
-              <option value="MS00475">MS00475</option>
-              <option value="MS00501">MS00501</option>
-              <option value="MS00505">MS00505</option>
-              <option value="MS00512">MS00512</option>
-              <option value="MS00521">MS00521</option>
-              <option value="MS00549">MS00549</option>
-              <option value="MS00589">MS00589</option>
-              <option value="MS00625">MS00625</option>
-              <option value="MS00639">MS00639</option>
-              <option value="MS00661">MS00661</option>
-              <option value="MS00662">MS00662</option>
-              <option value="MS00664">MS00664</option>
-              <option value="MS00680">MS00680</option>
-              <option value="MS00701">MS00701</option>
-              <option value="MS00703">MS00703</option>
-              <option value="MS00704">MS00704</option>
-              <option value="MS00705">MS00705</option>
-              <option value="MS00730">MS00730</option>
-              <option value="MS00784">MS00784</option>
-              <option value="MS00824">MS00824</option>
-              <option value="MS00830">MS00830</option>
-              <option value="MS00864">MS00864</option>
-              <option value="MS00885">MS00885</option>
-              <option value="MS00909">MS00909</option>
-              <option value="MS00939">MS00939</option>
-              <option value="MS00983">MS00983</option>
-              <option value="MS00985">MS00985</option>
-              <option value="MS01003">MS01003</option>
-              <option value="MS01025">MS01025</option>
-              <option value="MS01041">MS01041</option>
-              <option value="MS01054">MS01054</option>
-              <option value="MS01055">MS01055</option>
-              <option value="MS01057">MS01057</option>
-              <option value="MS01060">MS01060</option>
-              <option value="MS01078">MS01078</option>
-              <option value="MS01094">MS01094</option>
-              <option value="MS01101">MS01101</option>
-              <option value="MS01119">MS01119</option>
-              <option value="MS01121">MS01121</option>
-              <option value="MS01134">MS01134</option>
-              <option value="MS01142">MS01142</option>
-              <option value="MS01156">MS01156</option>
-              <option value="MS01190">MS01190</option>
-              <option value="MS01195">MS01195</option>
-              <option value="MS01269">MS01269</option>
-              <option value="MS01271">MS01271</option>
-              <option value="MS01274">MS01274</option>
-              <option value="MS01276">MS01276</option>
-              <option value="MS01302">MS01302</option>
-              <option value="MS01339">MS01339</option>
-              <option value="MS01341">MS01341</option>
-              <option value="MS01346">MS01346</option>
-              <option value="MS01395">MS01395</option>
-              <option value="MS01411">MS01411</option>
-              <option value="MS01436">MS01436</option>
-              <option value="MS01453">MS01453</option>
-              <option value="MS01456">MS01456</option>
-              <option value="MS01459">MS01459</option>
-              <option value="MS01466">MS01466</option>
-              <option value="MS01476">MS01476</option>
-              <option value="MS01499">MS01499</option>
-              <option value="MS01504">MS01504</option>
-              <option value="MS01505">MS01505</option>
-              <option value="MS01508">MS01508</option>
-              <option value="MS01509">MS01509</option>
-              <option value="MS01513">MS01513</option>
-              <option value="MS01535">MS01535</option>
-              <option value="MS01549">MS01549</option>
-              <option value="MS01558">MS01558</option>
-              <option value="MS02530">MS02530</option> -->
-              <option value="Other">Other</option>
+              <!-- Populate options dynamically in script.js -->
             </select>
           </div>
         </div>
@@ -199,183 +79,30 @@
           <input
             type="text"
             id="partnerNameSearch"
-            oninput="filterPartnerNames()"
             placeholder="Search Partner Name"
           />
           <div class="dropdo">
-            <select
-              id="partnerName"
-              onchange="updatePartnerSearchField()"
-              oninput="filterPartnerNames()"
-            >
-              <option
-                id="partnerPlaceholderOption"
-                value=""
-                disabled=""
-                selected=""
-              >
+            <select id="partnerName">
+              <option value="" disabled="" selected>
                 Select Partner Name
               </option>
-              <option value="Cashpor">Cashpor</option>
-              <option value="Muthoot">Muthoot</option>
-              <option value="Svatantra">Svatantra</option>
-              <option value="Namra Finance">Namra Finance</option>
-              <option value="Utkarsh SFB">Utkarsh SFB</option>
-              <option value="TATA Capital">TATA Capital</option>
-              <option value="North East Small Finance Bank">
-                North East Small Finance Bank
-              </option>
-              <option value="Pahal Finance">Pahal Finance</option>
-              <option value="Adi Chitragupta Finance Limited">
-                Adi Chitragupta Finance Limited
-              </option>
-              <option value="Bangia Gramin Vikas Bank">
-                Bangia Gramin Vikas Bank
-              </option>
-              <option value="Uttrayan">Uttrayan</option>
-              <option value="Satya Microcapital">Satya Microcapital</option>
-              <option value="Humana Financial Services">
-                Humana Financial Services
-              </option>
-              <option value="VFS">VFS</option>
-              <option value="Swarnodhayam Credits Pvt Ltd">
-                Swarnodhayam Credits Pvt Ltd
-              </option>
-              <option value="NABFINS Limited">NABFINS Limited</option>
-              <option value="Paschim Banga Gramin Bank">
-                Paschim Banga Gramin Bank
-              </option>
-              <option value="Share India Fincap">Share India Fincap</option>
-              <option value="SEBA RAHARA">SEBA RAHARA</option>
-              <option value="Uttar Banga Kshetriya Garmin Bank">
-                Uttar Banga Kshetriya Garmin Bank
-              </option>
-              <option value="Annapurna">Annapurna</option>
-              <option value="Bank of India">Bank of India</option>
-              <option value="Uttar Bihar Gramin Bank">
-                Uttar Bihar Gramin Bank
-              </option>
-              <option value="Servitium Micro Finance Pvt Ltd">
-                Servitium Micro Finance Pvt Ltd
-              </option>
-              <option value="Sonata Finance">Sonata Finance</option>
-              <option value="ESAF HEALTH CARE SERVICES PVT LTD">
-                ESAF HEALTH CARE SERVICES PVT LTD
-              </option>
-              <option value="CCFID">CCFID</option>
-              <option value="Mitrata">Mitrata</option>
-              <option value="M-INSURE CHANNEL">M-INSURE CHANNEL</option>
-              <option value="Maharashtra Gramin Bank">
-                Maharashtra Gramin Bank
-              </option>
-              <option value="ASA International">ASA International</option>
-              <option value="Arohan Financial Services Limited">
-                Arohan Financial Services Limited
-              </option>
-              <option value="APGVB">APGVB</option>
-              <option value="Sugamya">Sugamya</option>
-              <option value="Midland Microfin">Midland Microfin</option>
-              <option value="Chhattisgarh Rajya Gramin Bank">
-                Chhattisgarh Rajya Gramin Bank
-              </option>
-              <option value="Sampurna Training and Entrepreneurship Programme">
-                Sampurna Training and Entrepreneurship Programme
-              </option>
-              <option value="DCBS">DCBS</option>
-              <option value="Hirbandh Ramkrishna Sarada Sevashrama">
-                Hirbandh Ramkrishna Sarada Sevashrama
-              </option>
-              <option value="Indiabulls Housing Finance">
-                Indiabulls Housing Finance
-              </option>
-              <option value="Sindhuja Microcredit">Sindhuja Microcredit</option>
-              <option value="Muthoot Capital">Muthoot Capital</option>
-              <option value="Sarala Development & Microfinance Pvt Ltd">
-                Sarala Development & Microfinance Pvt Ltd
-              </option>
-              <option value="Madhyanchal Gramin Bank">
-                Madhyanchal Gramin Bank
-              </option>
-              <option value="Baghat Urban Co-op Bank Ltd">
-                Baghat Urban Co-op Bank Ltd
-              </option>
-              <option value="People's Forum">People's Forum</option>
-              <option value="KBS Local Bank">KBS Local Bank</option>
-              <option value="Janakalyan">Janakalyan</option>
-              <option value="Your Global Money">Your Global Money</option>
-              <option value="Agora Microfinance">Agora Microfinance</option>
-              <option value="Ambitions Services">Ambitions Services</option>
-              <option value="Kamal Fincap Private Limited">
-                Kamal Fincap Private Limited
-              </option>
-              <option value="Maddox Consultancy Services Pvt Ltd">
-                Maddox Consultancy Services Pvt Ltd
-              </option>
-              <option value="AISSHPRA">AISSHPRA</option>
-              <option value="Rohtak Central Cooperative Bank">
-                Rohtak Central Cooperative Bank
-              </option>
-              <option value="Projects">Projects</option>
-              <option value="Swabhimaan Sales & Services Pvt Ltd">
-                Swabhimaan Sales & Services Pvt Ltd
-              </option>
-              <option value="South India Finvest Pvt Ltd">
-                South India Finvest Pvt Ltd
-              </option>
-              <option value="Panchawati">Panchawati</option>
-              <option value="Pune District Central Co-op bank">
-                Pune District Central Co-op bank
-              </option>
-              <option value="APGVB Pensioners Association">
-                APGVB Pensioners Association
-              </option>
-              <option value="IFFCO Bazar">IFFCO Bazar</option>
-              <option value="Aviral Finance">Aviral Finance</option>
-              <option value="Shepays Financial Services Pvt Ltd">
-                Shepays Financial Services Pvt Ltd
-              </option>
-              <option value="DULAL NGO">DULAL NGO</option>
-              <option value="Adhikosh Financial Advisory Pvt Ltd">
-                Adhikosh Financial Advisory Pvt Ltd
-              </option>
-              <option value="Aishwarya MACC Society Ltd">
-                Aishwarya MACC Society Ltd
-              </option>
-              <option value="Sudhir HUF">Sudhir HUF</option>
-              <option value="CBC">CBC</option>
-              <option value="North East Small Finance Bank - SHG">
-                North East Small Finance Bank - SHG
-              </option>
+              <!-- Populate options dynamically in script.js -->
             </select>
           </div>
         </div>
-
-        <!-- <input
-          type="text"
-          id="partnerName"
-          placeholder="Partner Name"
-          required=""
-        /> -->
 
         <div id="itemsContainer"></div>
         <button type="button" class="addBtn" id="addItemButton">
           Add Another Item
         </button>
-        <button
-          type="button"
-          class="submitBtn"
-          id="submit1"
-          onclick="submitData();"
-        >
-          Submit
-        </button>
+        <button type="button" class="submitBtn" id="submit1">Submit</button>
+        <button type="button" id="clearFormButton" class="clearBtn">Clear Form</button>
+        <button type="button" id="logoutButton" class="logoutBtn">Logout</button>
       </form>
     </div>
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
-    <!-- <script src="https://mswasthticket1.tiiny.site/script.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://mswasthticket1.tiiny.site/test123.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="translations.js"></script>

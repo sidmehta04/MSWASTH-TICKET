@@ -1,4 +1,5 @@
 let userConfirmed = false;
+document.getElementById('submit1').addEventListener('click', submitData);
 
 var dataemployeeIds = JSON.parse(localStorage.getItem('dataemployeeids'));
   console.log("Employee IDs fetched:");
@@ -12,6 +13,19 @@ var dataemployeeIds = JSON.parse(localStorage.getItem('dataemployeeids'));
       option.textContent = id;
       select.appendChild(option);
     });
+
+var dataPartnerNames = JSON.parse(localStorage.getItem('datapartnernames'));
+    console.log("Partner Names fetched:");
+    console.log(dataPartnerNames);
+    const select1 = document.getElementById('partnerName');
+    dataPartnerNames.forEach(partner => {
+        console.log(partner);
+        console.log("hi");
+        const option = document.createElement('option');
+        option.value = partner;
+        option.textContent = partner;
+        select1.appendChild(option);
+      });
 
 
 document.addEventListener("DOMContentLoaded", function () {

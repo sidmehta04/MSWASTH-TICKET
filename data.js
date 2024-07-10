@@ -1,5 +1,9 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
-import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-database.js";
+import {
+  getDatabase,
+  ref,
+  get,
+} from "https://www.gstatic.com/firebasejs/10.12.1/firebase-database.js";
 
 // Firebase configuration (replace with your own config)
 const firebaseConfig = {
@@ -16,13 +20,13 @@ const firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig);
 const db = getDatabase(firebaseApp);
 
+// Function to fetch employee IDs
 async function fetchEmployeeIds() {
   try {
-    const snapshot = await get(ref(db, 'employeeIds'));
+    const snapshot = await get(ref(db, "employeeIds"));
     if (snapshot.exists()) {
       const data = snapshot.val();
-      const dataemployeeIds = Object.keys(data).map(key => data[key].empid);
-      return dataemployeeIds;
+      return Object.keys(data).map((key) => data[key].empid);
     } else {
       console.log("No employee IDs found");
       return [];
@@ -33,17 +37,32 @@ async function fetchEmployeeIds() {
   }
 }
 
-// Call fetchEmployeeIds to fetch and store employee IDs
-let dataemployeeIds = [];
-fetchEmployeeIds().then(ids => {
-  dataemployeeIds = ids;
-    console.log("Employee IDs fetched:");
-  console.log(dataemployeeIds);
-  localStorage.setItem('dataemployeeids', JSON.stringify(dataemployeeIds));
-}).catch(err => {
-  console.error("Failed to fetch employee IDs:", err);
-});
+// Function to fetch partner names
+async function fetchPartnerNames() {
+  try {
+    const snapshot = await get(ref(db, "partnerNames"));
+    if (snapshot.exists()) {
+      const data = snapshot.val();
+      return Object.keys(data).map((key) => data[key].partnerName);
+    } else {
+      console.log("No partner names found");
+      return [];
+    }
+  } catch (error) {
+    console.error("Error fetching partner names: ", error);
+    return [];
+  }
+}
 
+// Fetch and store employee IDs and partner names
+Promise.all([fetchEmployeeIds(), fetchPartnerNames()])
+  .then(([employeeIds, partnerNames]) => {
+    console.log("Employee IDs fetched:", employeeIds);
+    console.log("Partner names fetched:", partnerNames);
 
-
-
+    localStorage.setItem("dataemployeeids", JSON.stringify(employeeIds));
+    localStorage.setItem("datapartnernames", JSON.stringify(partnerNames));
+  })
+  .catch((err) => {
+    console.error("Failed to fetch data:", err);
+  });
