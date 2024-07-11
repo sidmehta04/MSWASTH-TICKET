@@ -1,11 +1,22 @@
 const users = [
   { username: "v", password: "1" },
-  { username: "user2", password: "pass2" }
+  { username: "user2", password: "pass2" },
+  { username: "abhishek", password: "123456" },
+  { username: "test", password: "123456" }
+
+
 ];
 
 const admins = [
   { username: "a", password: "1" },
-  { username: "admin2", password: "adminpass2" }
+  { username: "admin2", password: "adminpass2" },
+  { username: "admin2", password: "adminpass2" },
+  { username: "prakash", password: "123456" },
+  { username: "test", password: "123456" },
+  { username: "sidharth", password: "123456" }
+
+
+
 ];
 
 function login() {
