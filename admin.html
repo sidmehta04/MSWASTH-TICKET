@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Dashboard</title>
     <link rel="stylesheet" href="admin.css" />
+    <style>
+      .admin-section {
+        display: none;
+      }
+      iframe {
+        width: 100%;
+        height: 80vh; /* Adjust the height as needed */
+        border: none;
+      }
+    </style>
   </head>
   <body>
     <div class="main-header">
@@ -13,9 +23,9 @@
         alt="MSWasth Furniture Store Logo"
         class="logo1"
       />
-      <span class="header-text"
-        >M-SWASTH Solutions Pvt Ltd - Admin Dashboard</span
-      >
+      <span class="header-text">
+        M-SWASTH Solutions Pvt Ltd - Admin Dashboard
+      </span>
       <button class="logout-button" onclick="logout()">Logout</button>
     </div>
 
@@ -23,18 +33,18 @@
       <div class="sidebar">
         <ul>
           <li><a href="#home" onclick="showSection('home')">Home</a></li>
-
           <li>
             <a
               href="#manage-employees"
               onclick="showSection('manage-employees')"
-              >Manage Employee IDs</a
             >
+              Manage Employee IDs
+            </a>
           </li>
           <li>
-            <a href="#manage-partners" onclick="showSection('manage-partners')"
-              >Manage Partner Names</a
-            >
+            <a href="#manage-partners" onclick="showSection('manage-partners')">
+              Manage Partner Names
+            </a>
           </li>
         </ul>
       </div>
@@ -42,6 +52,12 @@
       <div class="content">
         <section id="home" class="admin-section">
           <h2>Home</h2>
+
+          <iframe
+            src="https://docs.google.com/spreadsheets/d/e/2PACX-1vS11KgFjRy72vjiHnquz1Jg6PN1eTBpWpq6G7ea5sftPf2DOpHa7suljZR6stWU_-2meIhAXn75Mwhs/pubhtml?gid=725247080&amp;single=true&amp;widget=true&amp;headers=false"
+            width="100%"
+            height="600px"
+          ></iframe>
         </section>
 
         <section id="manage-employees" class="admin-section">
@@ -94,11 +110,11 @@
               <input
                 type="text"
                 id="partnerNameInput"
-                placeholder="Enter Partner Nmae"
+                placeholder="Enter Partner Name"
                 required
               />
               <button type="button" onclick="addPartner()">
-                Add Employee ID
+                Add Partner Name
               </button>
             </form>
           </div>
@@ -109,7 +125,7 @@
               <input
                 type="text"
                 id="searchPartnerInput"
-                placeholder="Search Employee IDs"
+                placeholder="Search Partner Names"
                 onkeyup="searchPartnerTable()"
               />
             </form>
@@ -133,8 +149,23 @@
     <script type="module" src="data.js"></script>
     <script type="module" src="admin.js"></script>
     <script>
+      function showSection(section) {
+        // Hide all sections
+        document.querySelectorAll(".admin-section").forEach(function (el) {
+          el.style.display = "none";
+        });
+        // Show the selected section
+        document.getElementById(section).style.display = "block";
+      }
+
+      function refreshIframe() {
+        const iframe = document.getElementById("googleSheet");
+        iframe.src = iframe.src; // Reload the iframe
+      }
+
       document.addEventListener("DOMContentLoaded", function () {
         showSection("home");
+        setInterval(refreshIframe, 10000); // Refresh every 60 seconds
       });
     </script>
   </body>
