@@ -33,9 +33,7 @@ function login() {
     // Redirect to admin dashboard
 
     window.location.href = "admin.html";
-  } else if (admin2) {
-    window.location.href = "charts_analysis_admin.html";
-  } else {
+   } else {
     alert("Invalid username or password");
   }
 }

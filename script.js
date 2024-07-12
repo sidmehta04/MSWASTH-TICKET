@@ -1,32 +1,31 @@
 let userConfirmed = false;
-document.getElementById('submit1').addEventListener('click', submitData);
+document.getElementById("submit1").addEventListener("click", submitData);
 
-var dataemployeeIds = JSON.parse(localStorage.getItem('dataemployeeids'));
-  console.log("Employee IDs fetched:");
-  console.log(dataemployeeIds);
-  const select = document.getElementById('employeeId');
-  dataemployeeIds.forEach(id => {
-      console.log(id);
-      console.log("hi");
-      const option = document.createElement('option');
-      option.value = id;
-      option.textContent = id;
-      select.appendChild(option);
-    });
+var dataemployeeIds = JSON.parse(localStorage.getItem("dataemployeeids"));
+console.log("Employee IDs fetched:");
+console.log(dataemployeeIds);
+const select = document.getElementById("employeeId");
+dataemployeeIds.forEach((id) => {
+  console.log(id);
+  console.log("hi");
+  const option = document.createElement("option");
+  option.value = id;
+  option.textContent = id;
+  select.appendChild(option);
+});
 
-var dataPartnerNames = JSON.parse(localStorage.getItem('datapartnernames'));
-    console.log("Partner Names fetched:");
-    console.log(dataPartnerNames);
-    const select1 = document.getElementById('partnerName');
-    dataPartnerNames.forEach(partner => {
-        console.log(partner);
-        console.log("hi");
-        const option = document.createElement('option');
-        option.value = partner;
-        option.textContent = partner;
-        select1.appendChild(option);
-      });
-
+var dataPartnerNames = JSON.parse(localStorage.getItem("datapartnernames"));
+console.log("Partner Names fetched:");
+console.log(dataPartnerNames);
+const select1 = document.getElementById("partnerName");
+dataPartnerNames.forEach((partner) => {
+  console.log(partner);
+  console.log("hi");
+  const option = document.createElement("option");
+  option.value = partner;
+  option.textContent = partner;
+  select1.appendChild(option);
+});
 
 document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("addItemButton").addEventListener("click", addItem);
@@ -407,6 +406,13 @@ function submitData() {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
     saveAs(blob, "ItemsData.xlsx");
+    const submitButton = document.getElementById("submit1");
+    // Disable the submit button
+    submitButton.disabled = true;
+
+    setTimeout(() => {
+      submitButton.disabled = false;
+    }, 300000);
   } catch (error) {
     // Handle any errors that occurred during data processing or file generation
     console.error("Error:", error);
@@ -585,7 +591,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-
 // document.addEventListener("DOMContentLoaded", function () {
 //   const users = {
 //     v: "1",
@@ -649,7 +654,6 @@ document.addEventListener("DOMContentLoaded", function () {
 //     else {
 //       document.getElementById("loginError").style.display = "block";
 
-      
 //     }
 //   });
 
@@ -661,9 +665,7 @@ document.addEventListener("DOMContentLoaded", function () {
 //   document.getElementById("toggle-button").style.display = "none";
 //   document.getElementById("clearFormButton").style.display = "none";
 
-
 // });
-
 
 function clearForm() {
   document.getElementById("dataForm").reset();
@@ -677,14 +679,10 @@ function clearForm() {
 
 document.getElementById("clearFormButton").addEventListener("click", clearForm);
 
-function logout()
-{
+function logout() {
   window.location.href = "index.html";
 }
 document.getElementById("logoutButton").addEventListener("click", logout);
-
-
-
 
 // Function to calculate the total sum of all items
 function calculateTotalSum() {
