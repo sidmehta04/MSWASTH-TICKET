@@ -154,9 +154,8 @@ function filterEmployeeIds() {
   let foundCount = 0;
 
   for (let i = 0; i < options.length; i++) {
-    // start from 0 to include the placeholder option
-    const txtValue = options[i].textContent || options[i].innerText;
-    if (filter === "" || txtValue.toUpperCase().indexOf(filter) > -1) {
+    const txtValue = (options[i].textContent || options[i].innerText).toUpperCase();
+    if (filter === "" || txtValue.indexOf(filter) > -1) {
       options[i].style.display = "";
       foundCount++;
     } else {
@@ -166,23 +165,16 @@ function filterEmployeeIds() {
 
   if (foundCount === 0) {
     placeholderOption.text = "Other";
-    select.size = foundCount;
-  } else if (foundCount === 1) {
-    // If only one match is found, set the placeholder text and select that option
-    const selectedIndex = Array.from(options).findIndex(
-      (option) => option.style.display !== "none"
-    );
-    // placeholderOption.text = options[selectedIndex].textContent;
-    select.selectedIndex = selectedIndex;
     select.size = 0;
+    select.selectedIndex = 0;
   } else {
-    // Set a maximum size for the dropdown
+    placeholderOption.text = "Select Employee ID";
     const maxSize = 5; // Adjust this value as needed
     select.size = foundCount > maxSize ? maxSize : foundCount;
-  }
 
-  if (foundCount === 0) {
-    select.selectedIndex = 0;
+    if (foundCount === 1) {
+      select.size = 2;
+    }
   }
 }
 
@@ -193,6 +185,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const selectedOption = select.options[select.selectedIndex];
     if (selectedOption) {
       document.querySelector("#employeeIdSearch").value = selectedOption.text;
+      select.size = 0; // Reset the size to close the dropdown
     }
   });
 });
@@ -202,13 +195,11 @@ document.addEventListener("DOMContentLoaded", function () {
   searchInput.addEventListener("input", filterEmployeeIds);
 });
 
-function updateSearchField() {
+function updateEmployeeSearchField() {
   const select = document.querySelector("#employeeId");
-  const placeholderOption = document.querySelector("#placeholderOption");
-  var selectedEmpID = document.getElementById("employeeId").value;
-  document.getElementById("employeeIdSearch").value = selectedEmpID;
-  placeholderOption.text = selectedEmpID;
-  select.size = 0;
+  const selectedEmployeeId = select.value;
+  document.getElementById("employeeIdSearch").value = selectedEmployeeId;
+  select.size = 0; // Reset the size to close the dropdown
 }
 
 function filterPartnerNames() {

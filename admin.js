@@ -38,7 +38,10 @@ window.showSection = function (sectionId) {
 };
 
 window.addEmployee = async function () {
-  const employeeId = document.getElementById("employeeIdInput").value.trim().toUpperCase();
+  const employeeId = document
+    .getElementById("employeeIdInput")
+    .value.trim()
+    .toUpperCase();
 
   if (employeeId) {
     try {
@@ -60,7 +63,6 @@ window.addEmployee = async function () {
     alert("Please enter an Employee ID.");
   }
 };
-
 
 window.populateEmployeeTable = async function () {
   const tableBody = document.querySelector("#employeeTable tbody");
@@ -193,8 +195,6 @@ window.addPartner = async function () {
   }
 };
 
-
-
 window.populatePartnerTable = async function () {
   const tableBody = document.querySelector("#partnerTable tbody");
   tableBody.innerHTML = ""; // Clear existing rows
@@ -304,3 +304,22 @@ document.addEventListener("DOMContentLoaded", function () {
 window.logout = function () {
   window.location.href = "index.html";
 };
+
+function showSection(section) {
+  // Hide all sections
+  document.querySelectorAll(".admin-section").forEach(function (el) {
+    el.style.display = "none";
+  });
+  // Show the selected section
+  document.getElementById(section).style.display = "block";
+}
+
+function refreshIframe() {
+  const iframe = document.getElementById("googleSheet");
+  iframe.src = iframe.src; // Reload the iframe
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  showSection("home");
+  setInterval(refreshIframe, 60000); // Refresh every 60 seconds
+});
