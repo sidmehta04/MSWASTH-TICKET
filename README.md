@@ -23,5 +23,4 @@ On click the submit function file is saved in excel and firebase
 
 
 # MSWASTH-TICKET
-https://m-swasth-reimbursements.glitch.me
 
