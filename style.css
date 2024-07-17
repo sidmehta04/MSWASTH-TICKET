@@ -1,17 +1,22 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Arial, sans-serif;
+}
 body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-
+  margin: 0;
+  padding: 0;
   background-color: #f0f0f0;
   box-shadow: #444;
+  
+
+}
+.page-wrapper {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-}
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
 }
 
 .main-header {
@@ -25,13 +30,14 @@ html, body {
   background-color: #d3d3d3;
   align-items: center;
   z-index: 1000;
+  padding: 10px;
 }
 
 .logo1 {
   background-color: white;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   margin-right: 10px; /* Optional: for some space between logo and text */
 }
 
@@ -51,14 +57,6 @@ html, body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  margin-top: 60px; /* Adjusted to account for fixed header */
-  padding: 20px;
-}
-
-#dataForm {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
 }
 
 .header {
@@ -66,10 +64,16 @@ html, body {
   margin-top: 5%;
   margin-bottom: 30px;
   background-color: rgb(12, 235, 255);
-  padding: 20px;
+  padding: 40px;
   /* position: relative; */
   border-radius: 20px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+#dataForm {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
 .header h1 {
@@ -92,11 +96,11 @@ form {
   border-radius: 10px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   animation: slideInUp 1s ease-out;
-  
-    display: flex;
-    flex-direction: column;
-  
 }
+.form-group {
+  margin-bottom: 15px;
+}
+
 
 input[type="text"],
 input[type="number"],
@@ -282,6 +286,15 @@ select {
 .dark-mode .header {
   background-color: #333;
 }
+.dark-mode #dataForm {
+  background-color: #1a1a1a; /* Dark gray for better contrast */
+  color: white; /* Text color for visibility */
+  border: 1px solid #444; /* Softer border color */
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2); /* Subtle shadow for depth */
+  border-radius: 8px; /* Rounded corners for a modern look */
+  padding: 16px; /* Added padding for spacing */
+}
+
 
 .dark-mode form {
   background-color: #1e1e1e;
