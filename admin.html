@@ -4,6 +4,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Dashboard</title>
     <link rel="stylesheet" href="admin.css" />
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        if (sessionStorage.getItem("loggedIn") !== "true") {
+          window.location.href = "index.html"; // Redirect to login page
+        }
+      });
+    </script>
     <style>
       .admin-section {
         display: none;
@@ -145,5 +152,13 @@
 
     <script type="module" src="data.js"></script>
     <script type="module" src="admin.js"></script>
+    <script>
+      // Check if the page was reloaded
+      if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
+        // Redirect to index.html
+        window.location.href = "index.html";
+      }
+    </script>
+    <!-- Add this script to Mswasth.html and any other protected pages -->
   </body>
 </html>

@@ -6,6 +6,13 @@
     <title>Welcome to the Furniture Store Page</title>
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="main_site_responsive.css" />
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        if (sessionStorage.getItem("loggedIn") !== "true") {
+          window.location.href = "index.html"; // Redirect to login page
+        }
+      });
+    </script>
     <style>
       .button-sidebar {
         position: fixed;
@@ -75,9 +82,7 @@
       </div>
       <div class="container">
         <div class="header">
-          <h1 id="header-title">
-            WELCOME TO THE M-Swasth FURNITURE STORE PAGE
-          </h1>
+          <h1 id="header-title">WELCOME TO M-Swasth FURNITURE STORE PAGE</h1>
           <img
             src="https://mswasthticket.tiiny.site/download-removebg-preview.png"
             alt="MSWasth Furniture Store Logo"
@@ -201,5 +206,14 @@
         });
       });
     </script>
+    <script>
+      // Check if the page was reloaded
+      if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
+        // Redirect to index.html
+        window.location.href = "index.html";
+      }
+    </script>
+    <!-- Add this script to Mswasth.html and any other protected pages -->
+   
   </body>
 </html>

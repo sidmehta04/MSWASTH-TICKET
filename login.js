@@ -28,15 +28,18 @@ function login() {
   );
 
   if (user) {
+    // Set session storage item and redirect to user page
+    sessionStorage.setItem("loggedIn", "true");
     window.location.href = "Mswasth.html";
   } else if (admin) {
-    // Redirect to admin dashboard
-
+    // Set session storage item and redirect to admin dashboard
+    sessionStorage.setItem("loggedIn", "true");
     window.location.href = "admin.html";
-   } else {
+  } else {
     alert("Invalid username or password");
   }
 }
+
 
 function logout() {
   // Implement logout functionality here
