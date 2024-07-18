@@ -6,12 +6,68 @@
     <title>Welcome to the Furniture Store Page</title>
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="main_site_responsive.css" />
+    <style>
+      .button-sidebar {
+        position: fixed;
+        top: 0;
+        right: -200px; /* Off-screen initially */
+        width: 200px; /* Width of sidebar */
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.9);
+        z-index: 1000;
+        padding-top: 80px; /* Adjust as needed */
+        transition: right 0.3s ease;
+      }
+
+      .toggleBtn {
+        z-index: -100000;
+        top: 5px;
+        right: 10px;
+        position: fixed;
+        background-color: transparent;
+        color: rgb(0, 0, 0);
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+        animation: fadeInUp 1s ease-out;
+        margin-left: 30px;
+        width: 50px;
+        opacity: 1;
+      }
+
+      @media screen and (max-width: 767px) {
+        .toggleBtn {
+          z-index: 10000;
+        }
+        .button-sidebar {
+          right: -200px; /* Hide sidebar off-screen on small screens */
+        }
+
+        .button-sidebar.open {
+          right: 0; /* Display sidebar on the right */
+        }
+
+        .toggleBtn {
+          display: block; /* Ensure toggle button is visible */
+        }
+
+        .button-list {
+          display: none; /* Hide buttons by default */
+          padding-top: 20px; /* Adjust as needed */
+        }
+
+        .button-sidebar.open .button-list {
+          display: block; /* Display buttons when sidebar is open */
+        }
+      }
+    </style>
   </head>
   <body>
     <div class="page-wrapper">
       <div class="main-header">
         <img
-          src="https://mswasthticket1.tiiny.site/download-removebg-preview.png"
+          src="https://mswasthticket.tiiny.site/download-removebg-preview.png"
           alt="MSWasth Furniture Store Logo"
           class="logo1"
         />
@@ -23,7 +79,7 @@
             WELCOME TO THE M-Swasth FURNITURE STORE PAGE
           </h1>
           <img
-            src="https://mswasthticket1.tiiny.site/download-removebg-preview.png"
+            src="https://mswasthticket.tiiny.site/download-removebg-preview.png"
             alt="MSWasth Furniture Store Logo"
             id="logo"
             style="background-color: white; border-radius: 50%"
@@ -101,20 +157,31 @@
           </div>
           <div id="itemsContainer"></div>
         </form>
+
         <div class="button-sidebar">
+          <!-- Sidebar Buttons -->
+          <div class="button-list">
+            <button type="button" id="clearFormButton" class="clearBtn">
+              Clear Form
+            </button>
+            <button type="button" id="logoutButton" class="logoutBtn">
+              Logout
+            </button>
+          </div>
+        </div>
+        <div class="form-buttons">
           <button type="button" class="addBtn" id="addItemButton">
             Add Another Item
           </button>
           <button type="button" class="submitBtn" id="submit1">Submit</button>
-          <button type="button" id="clearFormButton" class="clearBtn">
-            Clear Form
-          </button>
-          <button type="button" id="logoutButton" class="logoutBtn">
-            Logout
-          </button>
         </div>
       </div>
+
+      <!-- Sidebar Toggle Button -->
+      <button type="button" id="sidebarToggle" class="toggleBtn">☰</button>
     </div>
+
+    <!-- Scripts -->
     <script src="script.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -122,5 +189,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="translations.js"></script>
     <script type="module" src="firebase.js"></script>
+
+    <!-- JavaScript for Sidebar Toggle -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const sidebarToggle = document.getElementById("sidebarToggle");
+        const buttonSidebar = document.querySelector(".button-sidebar");
+
+        sidebarToggle.addEventListener("click", () => {
+          buttonSidebar.classList.toggle("open");
+        });
+      });
+    </script>
   </body>
 </html>

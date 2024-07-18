@@ -9,6 +9,9 @@
     font-weight: bold;
     color: black;
   }
+  .dark-mode .main-header{
+    background-color: white;
+  }
 
   .header {
     height: 25%;

@@ -281,10 +281,22 @@ select {
 .dark-mode {
   background-color: #121212;
   color: #e0e0e0;
+
+}
+.dark-mode .main-header{
+  background-color: white;
 }
 
 .dark-mode .header {
   background-color: #333;
+}
+.dark-mode .button-sidebar
+{
+  background-color: rgb(26, 26, 26);
+  opacity: 100%;
+}
+.dark-mode .toggleBtn{
+  color: white;
 }
 .dark-mode #dataForm {
   background-color: #1a1a1a; /* Dark gray for better contrast */
@@ -323,6 +335,15 @@ select {
   color: #fff;
 }
 
+.dark-mode .dark-mode-button,
+.dark-mode .instructions-button,
+.dark-mode .clearBtn,
+.dark-mode .logoutBtn {
+  background-color: #ffffff;
+  color: #000000;
+  font-weight: 700;
+}
+
 .dark-mode .addBtn:hover,
 .dark-mode .submitBtn:hover,
 .dark-mode .deleteItem:hover,
@@ -341,6 +362,8 @@ select {
   border-radius: 5px;
   cursor: pointer;
   width: 170px;
+  animation: fadeInUp 1s ease-out;
+
 }
 
 .dark-mode-button:hover {
@@ -430,6 +453,8 @@ select {
   border-radius: 5px;
   cursor: pointer;
   width: 170px;
+  animation: fadeInUp 1s ease-out;
+
 }
 
 .instructions-button:hover {

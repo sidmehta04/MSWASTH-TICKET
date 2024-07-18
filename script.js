@@ -515,27 +515,28 @@ document.addEventListener("DOMContentLoaded", function () {
     document.body.classList.toggle("dark-mode");
   };
 
+  // Create Toggle Dark Mode button
   const darkModeButton = document.createElement("button");
   darkModeButton.innerText = "Toggle Dark Mode";
   darkModeButton.className = "dark-mode-button";
   darkModeButton.id = "toggle-button";
   darkModeButton.addEventListener("click", toggleDarkMode);
 
-  document.body.appendChild(darkModeButton);
-  // document.getElementById("toggle-button").style.display = "none";
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-  // Create the Instructions button
+  // Create Instructions button
   const instructionsButton = document.createElement("button");
   instructionsButton.innerText = "Instructions";
   instructionsButton.className = "instructions-button";
   instructionsButton.id = "instructionsButton";
   instructionsButton.addEventListener("click", showInstructions);
+  const buttosidebar=document.querySelector('.button-sidebar')
+  buttosidebar.appendChild(darkModeButton);
+  buttosidebar.appendChild(instructionsButton);
 
-  // Append the Instructions button to the body
-  document.body.appendChild(instructionsButton);
-  // document.getElementById("instructionsButton").style.display = "none";
+
+  // Append both buttons to the sidebar
+  const buttonList = document.querySelector('.button-list');
+  buttonList.appendChild(darkModeButton);
+  buttonList.appendChild(instructionsButton);
 
   // Create the modal for instructions
   const instructionsModal = document.createElement("div");
@@ -543,7 +544,6 @@ document.addEventListener("DOMContentLoaded", function () {
   instructionsModal.className = "modal";
   instructionsModal.innerHTML = `
       <div class="modal-content">
-
           <span class="close-button">&times;</span>
           <h2 id="instruction" style="background-color: #e5e5e5; margin-top:40px;color: black; padding: 5px; text-align: center; font-size:15px;">INSTRUCTIONS</h2>
           <ul>
@@ -557,6 +557,8 @@ document.addEventListener("DOMContentLoaded", function () {
           </ul>
       </div>
   `;
+
+  // Append the instructions modal to the body
   document.body.appendChild(instructionsModal);
 
   // Function to show instructions modal
