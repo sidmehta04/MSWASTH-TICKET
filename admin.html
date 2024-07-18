@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -30,9 +31,10 @@
         class="logo1"
       />
       <span class="header-text">
-        M-SWASTH Solutions Pvt Ltd - Admin Dashboard
+        M-SWASTH ADMIN DASHBOARD 
       </span>
       <button class="logout-button" onclick="logout()">Logout</button>
+      <button class="sidebar-toggler" onclick="toggleSidebar()">☰</button>
     </div>
 
     <div class="admin-container">
@@ -153,6 +155,10 @@
     <script type="module" src="data.js"></script>
     <script type="module" src="admin.js"></script>
     <script>
+      function toggleSidebar() {
+        document.querySelector('.admin-container').classList.toggle('sidebar-hidden');
+      }
+
       // Check if the page was reloaded
       if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
         // Redirect to index.html

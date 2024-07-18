@@ -63,6 +63,7 @@
   padding: 20px;
   padding-top: 30px;
   overflow-y: auto;
+  transition: transform 0.3s ease-in-out;
 }
 
 .sidebar ul {
@@ -209,4 +210,61 @@ table tr:hover {
 
 .delete-button:hover {
   background-color: #c0392b;
+}
+
+/* Sidebar toggler */
+.sidebar-toggler {
+  display: none;
+  background-color: #2c3e50;
+  color: white;
+  border: none;
+  padding: 10px;
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 1100;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.sidebar-hidden .sidebar {
+  transform: translateX(-100%);
+}
+
+@media (max-width: 767px) {
+  .main-header {
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    justify-content: space-between;
+  }
+  .logo1{
+    width: 20px;
+    height: auto;
+    margin-left: 120px;
+  }
+  .header-text{
+    font-size: 12px;
+  }
+  .logout-button{
+    width: 70px;
+    height: auto;
+    font-size: 10px;
+  }
+  .sidebar {
+    transform: translateX(0%);
+    position: fixed;
+    width: 400px;
+    height: calc(100vh - 60px);
+  }
+  .content {
+    margin-left: 0;
+  }
+  .sidebar-toggler {
+    display: block;
+    width: 35px;
+    height: 30px;
+    font-size: 10px;
+    
+  }
+  
 }
