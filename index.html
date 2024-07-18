@@ -1,9 +1,12 @@
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Welcome to the Furniture Store Page</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style2.css" />
+
     <script type="module" src="data.js"></script>
     <script src="login.js" defer></script>
   </head>
@@ -35,3 +38,27 @@
     </script>
   </body>
 </html>
+<script>
+  function updateLoginText() {
+    if (window.innerWidth <= 767) {
+      const loginHeader = document.querySelector(".login-container h2");
+      if (loginHeader) {
+        loginHeader.textContent = " ";
+      }
+    }
+  }
+  function updateLoginText() {
+    if (window.innerWidth <= 767) {
+      const loginHeader = document.querySelector(".login-container h2");
+      if (loginHeader) {
+        loginHeader.textContent = " ";
+      }
+    }
+  }
+
+  // Run on page load
+  updateLoginText();
+
+  // Run on window resize
+  window.addEventListener("resize", updateLoginText);
+</script>
