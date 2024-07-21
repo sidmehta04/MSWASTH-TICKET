@@ -26,7 +26,7 @@
   <body>
     <div class="main-header">
       <img
-        src="https://mswasthticket1.tiiny.site/download-removebg-preview.png"
+        src="https://mswasthticket.tiiny.site/download-removebg-preview.png"
         alt="MSWasth Furniture Store Logo"
         class="logo1"
       />
@@ -34,7 +34,7 @@
         M-SWASTH ADMIN DASHBOARD 
       </span>
       <button class="logout-button" onclick="logout()">Logout</button>
-      <button class="sidebar-toggler" onclick="toggleSidebar()">☰</button>
+      <button class="sidebar-toggler">☰</button>
     </div>
 
     <div class="admin-container">
@@ -59,7 +59,7 @@
 
       <div class="content">
         <section id="home" class="admin-section">
-          <h2>Home</h2>
+          <h2 class="section-header"> Home</h2>
           <iframe
             id="googleSheet"
             src="https://docs.google.com/spreadsheets/d/e/2PACX-1vS11KgFjRy72vjiHnquz1Jg6PN1eTBpWpq6G7ea5sftPf2DOpHa7suljZR6stWU_-2meIhAXn75Mwhs/pubhtml?gid=1270985006&amp;single=true&amp;widget=true&amp;headers=false"
@@ -155,9 +155,16 @@
     <script type="module" src="data.js"></script>
     <script type="module" src="admin.js"></script>
     <script>
-      function toggleSidebar() {
-        document.querySelector('.admin-container').classList.toggle('sidebar-hidden');
-      }
+document.querySelector('.sidebar-toggler').addEventListener('click', function() {
+  document.body.classList.toggle('sidebar-visible');
+});
+
+document.querySelectorAll('.sidebar ul li a').forEach(link => {
+  link.addEventListener('click', function() {
+    document.body.classList.remove('sidebar-visible');
+  });
+});
+
 
       // Check if the page was reloaded
       if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {

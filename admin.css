@@ -233,12 +233,12 @@ table tr:hover {
 
 @media (max-width: 767px) {
   .main-header {
-    background-color: rgb(255, 255, 255);
+    background-color: lightgrey;
     display: flex;
     justify-content: space-between;
   }
   .logo1{
-    width: 20px;
+    width: 30px;
     height: auto;
     margin-left: 120px;
   }
@@ -248,13 +248,15 @@ table tr:hover {
   .logout-button{
     width: 70px;
     height: auto;
-    font-size: 10px;
+    font-size: 12px;
   }
   .sidebar {
-    transform: translateX(0%);
+    transform: translateX(-100%);
     position: fixed;
-    width: 400px;
+    width: 250px; /* Adjusted sidebar width */
     height: calc(100vh - 60px);
+    top: 60px;
+    z-index: 1050;
   }
   .content {
     margin-left: 0;
@@ -264,7 +266,15 @@ table tr:hover {
     width: 35px;
     height: 30px;
     font-size: 10px;
-    
   }
-  
+  .sidebar-visible .sidebar {
+    transform: translateX(0%);
+  }
+  .section-header
+  {
+    font-size: 20px;
+  }
+  h4{
+    font-size: small;
+  }
 }
