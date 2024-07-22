@@ -1,28 +1,28 @@
 // Import Firebase modules
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
 import {
   getDatabase,
   ref as dbRef,
   set,
   get,
   update,
-} from "https://www.gstatic.com/firebasejs/10.12.1/firebase-database.js";
+} from "https://www.gstatic.com/firebasejs/10.12.4/firebase-database.js";
 import {
   getStorage,
   ref as storageRef,
   uploadBytes,
   getDownloadURL,
-} from "https://www.gstatic.com/firebasejs/10.12.1/firebase-storage.js";
+} from "https://www.gstatic.com/firebasejs/10.12.4/firebase-storage.js";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyA0OIPqPpYcLyyBAci9UWx-95QIVtwtRik",
-  authDomain: "mswasth-21df5.firebaseapp.com",
-  databaseURL: "https://mswasth-21df5-default-rtdb.firebaseio.com",
-  projectId: "mswasth-21df5",
-  storageBucket: "mswasth-21df5.appspot.com",
-  messagingSenderId: "281245658334",
-  appId: "1:281245658334:web:7a4443d4f4821e00f8e64f",
+  apiKey: "AIzaSyBqEYta8mbk2kmGSMpNUSvz3Etji8LkEuE",
+  authDomain: "mswasth-reimbursement.firebaseapp.com",
+  projectId: "mswasth-reimbursement",
+  storageBucket: "mswasth-reimbursement.appspot.com",
+  messagingSenderId: "719155230190",
+  appId: "1:719155230190:web:b5989e1779a51b9be28aff",
+  measurementId: "G-YT0GGE631Y"
 };
 
 // Initialize Firebase
@@ -85,7 +85,8 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("Uploading data to Firebase...");
         const timestamp = Date.now();
         const customKey = generateCustomKey();
-        const storageFolderLink = `https://console.firebase.google.com/u/4/project/mswasth-21df5/storage/mswasth-21df5.appspot.com/files/~2Ffiles~2F${customKey}`;
+        const storageFolderLink = `https://console.firebase.google.com/u/4/project/mswasth-reimbursement/storage/mswasth-reimbursement.appspot.com/files/~2Ffiles~2F${customKey}`;
+
 
         const clinics = getMultipleValuesByClass("clinicCodeInput");
         const cells = getMultipleValuesByClass("itemSelect");
@@ -151,7 +152,7 @@ async function addFolderLinksToExistingEntries() {
         if (data.hasOwnProperty(key)) {
           const entry = data[key];
           if (!entry.folderLink) {
-            const storageFolderLink = `https://console.firebase.google.com/u/4/project/mswasth-21df5/storage/mswasth-21df5.appspot.com/files/~2Ffiles~2F${key}`;
+            const storageFolderLink = `https://console.firebase.google.com/u/4/project/mswasth-reimbursement/storage/mswasth-reimbursement.appspot.com/files/~2Ffiles~2F${key}`;
             await update(dbRef(db, `user/${key}`), { folderLink: storageFolderLink });
             console.log(`Folder link added to entry with key: ${key}`);
           } else {
